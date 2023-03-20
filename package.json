@@ -1,0 +1,25 @@
+{
+  "name": "chessai",
+  "version": "1.0.0",
+  "description": "Full-Stack web app built with NodeJS, Chess AI with pruning & min-max",
+  "main": "index.js",
+  "scripts": {
+	"dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdriMareel/ChessAI.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdriMareel/ChessAI/issues"
+  },
+  "homepage": "https://github.com/AdriMareel/ChessAI#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "path": "^0.12.7"
+  }
+}
