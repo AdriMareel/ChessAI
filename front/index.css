@@ -32,3 +32,15 @@ body{
 	height: 50px;
 }
 
+.ligne{
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	margin:auto;
+}
+
+.colonne{
+	width: 50px;
+	height: 20px;
+	text-align: center;
+}

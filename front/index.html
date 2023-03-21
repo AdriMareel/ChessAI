@@ -14,26 +14,7 @@
 	</div>
 
 
-	<script>
-		let board = document.getElementById("board");
-		for (let i = 0; i < 8; i++) {
-        let row = document.createElement("div");
-        row.className = "row";
-        for (let j = 0; j < 8; j++) {
-            let cell = document.createElement("div");
-            cell.className = "square";
-            if((j+i)%2==0){
-                cell.className += " light";
-            }
-            else{
-                cell.className += " dark";
-            } 
-            cell.id = String.fromCharCode(97 + j) + (i+1);
-            row.appendChild(cell);
-        }
-        board.appendChild(row);
-		}
-	</script>
+
 	<script src="display.js"></script>
 </body>
 </html>
