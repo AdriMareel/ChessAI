@@ -20,21 +20,27 @@ for (let i = 0; i < 9; i++) {
 	
 		for (let j = 0; j < 9; j++) {
 			let cell = document.createElement("div");
+			//caracteristique spéciale pour la première ligne 
 			if(i==0){
 				cell.className = "colonne";
 				cell.innerText = String.fromCharCode(96 + j);
+				//en particulier pour la première case
 				if(j==0){
 					cell.className = "ligne";
 					cell.innerText = "";
 				}
 			}
+			//caracteristique spéciale pour la première colonne
 			else if(j==0){
 				cell.className = "ligne";
 				cell.innerText = i;
 			}
+
+			//Pour toute les cases "normales"
 			else{
 				cell.className = "square";
 				cell.id = String.fromCharCode(96 + j) + (i);
+				// on met la classe light ou dark en fonction de la position de la case
 				if((j+i)%2==1){
 					cell.className += " light";
 				}
@@ -44,6 +50,7 @@ for (let i = 0; i < 9; i++) {
 			}
 			row.appendChild(cell);
 		}
+		//on les ajoutes au board
 	board.appendChild(row);
 }
 
