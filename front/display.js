@@ -25,6 +25,7 @@ for (let i = 0; i < 9; i++) {
 				cell.innerText = String.fromCharCode(96 + j);
 				if(j==0){
 					cell.className = "ligne";
+					cell.innerText = "";
 				}
 			}
 			else if(j==0){
