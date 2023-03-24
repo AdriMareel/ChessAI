@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const setupGetPossibleMoves = require('./routes/getPossibleMoves');
+const setupGetPossibleMoves = require('./back/routes/getPossibleMoves');
+const Game = require('./back/models/Chess');
 
 const app = express();
 const port = 3000;
