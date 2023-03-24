@@ -1,3 +1,5 @@
+import { removePossibleMoves, displayPossibleMoves } from './display.js';
+
 function chessCoordinateToXY(chessCoord) {
 	const file = chessCoord[0].toLowerCase().charCodeAt(0) - 97; // Convertit la lettre en un chiffre de 0 à 7 (a -> 0, b -> 1, etc.)
 	const rank = parseInt(chessCoord[1]) - 1; // Convertit le chiffre après la lettre en un nombre de 0 à 7 (1 -> 0, 2 -> 1, etc.)
@@ -10,9 +12,7 @@ function xyToChessCoordinate(xyObj) {
 	return file + rank;
 }
 
-function getPossibleMoves(piece){
-	//get the id of the div just above the piece
-	chessCoordinate = document.getElementById(piece).parentNode.id;
+export function getPossibleMoves(chessCoordinate){
 	const {x , y} = chessCoordinateToXY(chessCoordinate);
 	// Make a POST request to the server with the position information
 	fetch('/getPossibleMoves', {	
@@ -27,6 +27,9 @@ function getPossibleMoves(piece){
 	})
 		.then(res => res.json())
 		.then(data => {
+			console.log("remove possible moves");
+			removePossibleMoves();
+
 			data.forEach(element => {
 				console.log(element);
 				displayPossibleMoves(xyToChessCoordinate(element));

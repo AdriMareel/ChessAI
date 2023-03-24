@@ -1,3 +1,5 @@
+import { getPossibleMoves } from "./chess.js";
+
 const chessCoordInit = [
 	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", // White pieces
 	"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",  // White pawns
@@ -39,25 +41,34 @@ for (let i = 0; i < 9; i++) {
 			else{
 				cell.className = "square";
 				cell.id = String.fromCharCode(96 + j) + (i);
+				
 				// on met la classe light ou dark en fonction de la position de la case
 				if((j+i)%2==1){
-					cell.className += " light";
+					cell.classList.add("light");
 				}
 				else{
-					cell.className += " dark";
+					cell.classList.add("dark");
 				} 
 			}
 			row.appendChild(cell);
 		}
-		//on les ajoutes au board
 	board.appendChild(row);
+}
+
+for (let item of document.getElementsByClassName("square")) {
+	item.addEventListener("click", () => getPossibleMoves(item.id));
 }
 
 //chess pieces initialisation
 for (let i = 0; i < chessCoordInit.length; i++) {
-	document.getElementById(chessCoordInit[i]).innerHTML = `<img src="public/pieces/${chessPieceInit[i]}.png" onclick="getPossibleMoves('${chessPieceInit[i]+i}')" alt="${chessPieceInit[i]}" class="piece" id="${chessPieceInit[i]+i}">`;
+	document.getElementById(chessCoordInit[i]).innerHTML = `<img src="public/pieces/${chessPieceInit[i]}.png" alt="${chessPieceInit[i]}" class="piece" >`;
 }
 
-function displayPossibleMoves(id){
+export function displayPossibleMoves(id){
     document.getElementById(id).classList.add("possibleMove");
+}
+
+export function removePossibleMoves(){
+	const possibleMoves = document.querySelectorAll('.possibleMove');
+  	possibleMoves.forEach(move => move.classList.remove('possibleMove'));
 }
