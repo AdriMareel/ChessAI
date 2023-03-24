@@ -4,4 +4,10 @@ module.exports = (app, game) => {
 
         res.send(game.getPossibleMoves(game.board[y][x]));
     });
+
+    app.post('/movePiece', (req, res) => {
+        const {x, y, newX, newY} = req.body;
+
+        res.send(game.movePiece(x, y, newX, newY));
+    });
 }

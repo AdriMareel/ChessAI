@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const setupGetPossibleMoves = require('./back/routes/getPossibleMoves');
+const setupChessRoutes = require('./back/routes/chessRoutes');
 const Game = require('./back/models/Chess');
 
 const app = express();
@@ -22,4 +22,4 @@ app.get('/', (req, res) => {
 
 let game = new Game();
 
-setupGetPossibleMoves(app,game);
+setupChessRoutes(app,game);
