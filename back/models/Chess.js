@@ -313,7 +313,7 @@ module.exports = class Game {
 
 				kingMoves.forEach(move => {
 					if (move.x >= 0 && move.x < this.board.length && move.y >= 0 && move.y < this.board.length) {
-						if (this.board[move.x][move.y] === null || this.board[move.x][move.y].color !== piece.color) {
+						if (this.board[move.y][move.x] === null || this.board[move.y][move.x].color !== piece.color) {
 							possibleMoves.push(move);
 						}
 					}
