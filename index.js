@@ -22,4 +22,4 @@ app.get('/', (req, res) => {
 
 let game = new Game();
 
-setupGetPossibleMoves(app);
+setupGetPossibleMoves(app,game);
