@@ -59,5 +59,5 @@ for (let i = 0; i < chessCoordInit.length; i++) {
 }
 
 function displayPossibleMoves(id){
-    document.getElementById(id).classList += "possibleMove";
+    document.getElementById(id).classList.add("possibleMove");
 }
