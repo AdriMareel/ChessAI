@@ -12,7 +12,6 @@ const chessPieceInit = [
 	"black-rook", "black-knight", "black-bishop", "black-queen", "black-king", "black-bishop", "black-knight", "black-rook"  // Black pieces
 ];
 
-
 let board = document.getElementById("board");
 for (let i = 0; i < 9; i++) {
 	let row = document.createElement("div");
@@ -53,7 +52,6 @@ for (let i = 0; i < 9; i++) {
 		//on les ajoutes au board
 	board.appendChild(row);
 }
-
 
 //chess pieces initialisation
 for (let i = 0; i < chessCoordInit.length; i++) {

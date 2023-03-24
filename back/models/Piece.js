@@ -1,4 +1,4 @@
-export default class Piece {
+module.exports = class Piece {
 	constructor(color, type) {
 		this.color = color;
 		this.type = type;
