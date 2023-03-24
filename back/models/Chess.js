@@ -67,7 +67,7 @@ module.exports = class Game {
 						}
 					}
 				}
-				
+	
 			break;
 
 			case "rook":
