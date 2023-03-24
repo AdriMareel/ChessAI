@@ -159,10 +159,10 @@ module.exports = class Game {
 			case "bishop":
 				for (let i = 1 ; i < this.board.length ; i++) {
 					if (pieceX + i < this.board.length && pieceY + i < this.board.length) {
-						if (this.board[pieceX + i][pieceY + i] === null) {
+						if (this.board[pieceY + i][pieceX + i] === null) {
 							possibleMoves.push({x: pieceX + i, y: pieceY + i});
 						} else {
-							if (this.board[pieceX + i][pieceY + i].color !== piece.color) {
+							if (this.board[pieceY + i][pieceX + i].color !== piece.color) {
 								possibleMoves.push({x: pieceX + i, y: pieceY + i});
 							}
 							break;
@@ -170,10 +170,10 @@ module.exports = class Game {
 					}
 
 					if (pieceX - i >= 0 && pieceY - i >= 0) {
-						if (this.board[pieceX - i][pieceY - i] === null) {
+						if (this.board[pieceY - i][pieceX - i] === null) {
 							possibleMoves.push({x: pieceX - i, y: pieceY - i});
 						} else {
-							if (this.board[pieceX - i][pieceY - i].color !== piece.color) {
+							if (this.board[pieceY - i][pieceX - i].color !== piece.color) {
 								possibleMoves.push({x: pieceX - i, y: pieceY - i});
 							}
 							break;
@@ -181,10 +181,10 @@ module.exports = class Game {
 					}
 
 					if (pieceX + i < this.board.length && pieceY - i >= 0) {
-						if (this.board[pieceX + i][pieceY - i] === null) {
+						if (this.board[pieceY - i][pieceX + i] === null) {
 							possibleMoves.push({x: pieceX + i, y: pieceY - i});
 						} else {
-							if (this.board[pieceX + i][pieceY - i].color !== piece.color) {
+							if (this.board[pieceY - i][pieceX + i].color !== piece.color) {
 								possibleMoves.push({x: pieceX + i, y: pieceY - i});
 							}
 							break;
@@ -192,10 +192,10 @@ module.exports = class Game {
 					}
 
 					if (pieceX - i >= 0 && pieceY + i < this.board.length) {
-						if (this.board[pieceX - i][pieceY + i] === null) {
+						if (this.board[pieceY + i][pieceX - i] === null) {
 							possibleMoves.push({x: pieceX - i, y: pieceY + i});
 						} else {
-							if (this.board[pieceX - i][pieceY + i].color !== piece.color) {
+							if (this.board[pieceY + i][pieceX - i].color !== piece.color) {
 								possibleMoves.push({x: pieceX - i, y: pieceY + i});
 							}
 							break;
@@ -254,10 +254,10 @@ module.exports = class Game {
 				//diagonals
 				for (let i = 1 ; i < this.board.length ; i++) {
 					if (pieceX + i < this.board.length && pieceY + i < this.board.length) {
-						if (this.board[pieceX + i][pieceY + i] === null) {
+						if (this.board[pieceY + i][pieceX + i] === null) {
 							possibleMoves.push({x: pieceX + i, y: pieceY + i});
 						} else {
-							if (this.board[pieceX + i][pieceY + i].color !== piece.color) {
+							if (this.board[pieceY + i][pieceX + i].color !== piece.color) {
 								possibleMoves.push({x: pieceX + i, y: pieceY + i});
 							}
 							break;
@@ -265,10 +265,10 @@ module.exports = class Game {
 					}
 
 					if (pieceX - i >= 0 && pieceY - i >= 0) {
-						if (this.board[pieceX - i][pieceY - i] === null) {
+						if (this.board[pieceY - i][pieceX - i] === null) {
 							possibleMoves.push({x: pieceX - i, y: pieceY - i});
 						} else {
-							if (this.board[pieceX - i][pieceY - i].color !== piece.color) {
+							if (this.board[pieceY - i][pieceX - i].color !== piece.color) {
 								possibleMoves.push({x: pieceX - i, y: pieceY - i});
 							}
 							break;
@@ -276,10 +276,10 @@ module.exports = class Game {
 					}
 
 					if (pieceX + i < this.board.length && pieceY - i >= 0) {
-						if (this.board[pieceX + i][pieceY - i] === null) {
+						if (this.board[pieceY - i][pieceX + i] === null) {
 							possibleMoves.push({x: pieceX + i, y: pieceY - i});
 						} else {
-							if (this.board[pieceX + i][pieceY - i].color !== piece.color) {
+							if (this.board[pieceY - i][pieceX + i].color !== piece.color) {
 								possibleMoves.push({x: pieceX + i, y: pieceY - i});
 							}
 							break;
@@ -287,10 +287,10 @@ module.exports = class Game {
 					}
 
 					if (pieceX - i >= 0 && pieceY + i < this.board.length) {
-						if (this.board[pieceX - i][pieceY + i] === null) {
+						if (this.board[pieceY + i][pieceX - i] === null) {
 							possibleMoves.push({x: pieceX - i, y: pieceY + i});
 						} else {
-							if (this.board[pieceX - i][pieceY + i].color !== piece.color) {
+							if (this.board[pieceY + i][pieceX - i].color !== piece.color) {
 								possibleMoves.push({x: pieceX - i, y: pieceY + i});
 							}
 							break;
