@@ -12,6 +12,7 @@ const chessPieceInit = [
 	"black-rook", "black-knight", "black-bishop", "black-queen", "black-king", "black-bishop", "black-knight", "black-rook"  // Black pieces
 ];
 
+
 let board = document.getElementById("board");
 for (let i = 0; i < 9; i++) {
 	let row = document.createElement("div");
@@ -53,15 +54,33 @@ for (let i = 0; i < 9; i++) {
 	board.appendChild(row);
 }
 
+
 //chess pieces initialisation
 for (let i = 0; i < chessCoordInit.length; i++) {
 	document.getElementById(chessCoordInit[i]).innerHTML = `<img src="public/pieces/${chessPieceInit[i]}.png" onclick="SeeInfo('${chessPieceInit[i]+i}')" alt="${chessPieceInit[i]}" class="piece" id="${chessPieceInit[i]+i}">`;
 }
+let div
 
+	function SeeInfo(piece){
+		//get the id of the div just above the piece
+		div = document.getElementById(piece).parentNode.id;
+		
+		// Make a POST request to the server with the position information
+		fetch('/askPiece', {
+			
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ 
+				div,piece})
+		})
+			.then(res => res.json())
+			.then(data => {
+			// Interpret the response object and do something with it
+			const { test, test2 } = data;
+			console.log(`selectionned case are ${test} and ${test2}`);
 
-function SeeInfo(piece){
-	//get the id of the div just above the piece
-	let div = document.getElementById(piece).parentNode.id;
-	//get the id of the piece
-	console.log(div)
-}
+			
+			})
+	}
