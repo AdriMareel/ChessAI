@@ -53,17 +53,17 @@ module.exports = class Game {
 				const oppositeColor = piece.color == "white" ? "black" : "white";
 				
 				if (pieceX != 0){
-					if (this.board[pieceX - 1][pieceX + pawnDir] !== null) {
-						if (this.board[pieceX - 1][pieceX + pawnDir].color === oppositeColor) {
-							possibleMoves.push({x: pieceX + 1, y: pieceX + pawnDir});
+					if (this.board[pieceY + pawnDir][pieceX - 1] !== null) {
+						if (this.board[pieceY + pawnDir][pieceX - 1].color === oppositeColor) {
+							possibleMoves.push({x: pieceX - 1, y: pieceY + pawnDir});
 						}
 					}
 				}
-				
+
 				if (pieceX != 7){
-					if (this.board[pieceX + 1][pieceX + pawnDir] !== null) {
-						if (this.board[pieceX + 1][pieceX + pawnDir].color === oppositeColor) {
-							possibleMoves.push({x: pieceX - 1, y: pieceX + pawnDir});
+					if (this.board[pieceY + pawnDir][pieceX + 1] !== null) {
+						if (this.board[pieceY + pawnDir][pieceX + 1].color === oppositeColor) {
+							possibleMoves.push({x: pieceX + 1, y: pieceY + pawnDir});
 						}
 					}
 				}
@@ -75,10 +75,10 @@ module.exports = class Game {
 					//check if i out of bounds
 					if (i > 7) break;
 
-					if (this.board[i][pieceY] === null) {
+					if (this.board[pieceY][i] === null) {
 						possibleMoves.push({x: i, y: pieceY});
 					} else {
-						if (this.board[i][pieceY].color !== piece.color) {
+						if (this.board[pieceY][i].color !== piece.color) {
 							possibleMoves.push({x: i, y: pieceY});
 						}
 						break;
@@ -89,10 +89,10 @@ module.exports = class Game {
 					//check if i out of bounds 
 					if (i < 0) break;
 
-					if (this.board[i][pieceY] === null) {
+					if (this.board[pieceY][i] === null) {
 						possibleMoves.push({x: i, y: pieceY});
 					} else {
-						if (this.board[i][pieceY].color !== piece.color) {
+						if (this.board[pieceY][i].color !== piece.color) {
 							possibleMoves.push({x: i, y: pieceY});
 						}
 						break;
@@ -103,10 +103,10 @@ module.exports = class Game {
 					//check if i out of bounds
 					if (i > 7) break;
 
-					if (this.board[pieceX][i] === null) {
+					if (this.board[i][pieceX] === null) {
 						possibleMoves.push({x: pieceX, y: i});
 					} else {
-						if (this.board[pieceX][i].color !== piece.color) {
+						if (this.board[i][pieceX].color !== piece.color) {
 							possibleMoves.push({x: pieceX, y: i});
 						}
 						break;
@@ -117,10 +117,10 @@ module.exports = class Game {
 					//check if i out of bounds
 					if (i < 0) break;
 
-					if (this.board[pieceX][i] === null) {
+					if (this.board[i][pieceX] === null) {
 						possibleMoves.push({x: pieceX, y: i});
 					} else {
-						if (this.board[pieceX][i].color !== piece.color) {
+						if (this.board[i][pieceX].color !== piece.color) {
 							possibleMoves.push({x: pieceX, y: i});
 						}
 						break;
@@ -129,7 +129,7 @@ module.exports = class Game {
 			break;
 
 			case "knight":
-				knightMoves = [
+				let knightMoves = [
 					{ x: 2, y: 1 },
 					{ x: 2, y: -1 },
 					{ x: -2, y: 1 },
@@ -145,16 +145,16 @@ module.exports = class Game {
 					const newY = pieceY + move.y;
 
 					if (newX >= 0 && newX < this.board.length && newY >= 0 && newY < this.board.length) {
-						if (this.board[newX][newY] === null) {
+						if (this.board[newY][newX] === null) {
 							possibleMoves.push({x: newX, y: newY});
 						} else {
-							if (this.board[newX][newY].color !== piece.color) {
+							if (this.board[newY][newX].color !== piece.color) {
 								possibleMoves.push({x: newX, y: newY});
 							}
 						}
 					}
 				});
-				break;
+			break;
 			
 			case "bishop":
 				for (let i = 1 ; i < this.board.length ; i++) {
@@ -208,10 +208,10 @@ module.exports = class Game {
 			case "queen":
 				// Horizontal and vertical moves
 				for (let i = pieceX + 1 ; i < this.board.length ; i++) {
-					if (this.board[i][pieceY] === null) {
+					if (this.board[pieceY][i] === null) {
 						possibleMoves.push({x: i, y: pieceY});
 					} else {
-						if (this.board[i][pieceY].color !== piece.color) {
+						if (this.board[pieceY][i].color !== piece.color) {
 							possibleMoves.push({x: i, y: pieceY});
 						}
 						break;
@@ -219,10 +219,10 @@ module.exports = class Game {
 				}
 
 				for (let i = pieceX - 1 ; i < this.board.length ; i--) {
-					if (this.board[i][pieceY] === null) {
+					if (this.board[pieceY][i] === null) {
 						possibleMoves.push({x: i, y: pieceY});
 					} else {
-						if (this.board[i][pieceY].color !== piece.color) {
+						if (this.board[pieceY][i].color !== piece.color) {
 							possibleMoves.push({x: i, y: pieceY});
 						}
 						break;
@@ -230,10 +230,10 @@ module.exports = class Game {
 				}
 
 				for (let i = pieceY + 1 ; i < this.board.length ; i++) {
-					if (this.board[pieceX][i] === null) {
+					if (this.board[i][pieceX] === null) {
 						possibleMoves.push({x: pieceX, y: i});
 					} else {
-						if (this.board[pieceX][i].color !== piece.color) {
+						if (this.board[i][pieceX].color !== piece.color) {
 							possibleMoves.push({x: pieceX, y: i});
 						}
 						break;
@@ -241,10 +241,10 @@ module.exports = class Game {
 				}
 
 				for (let i = pieceY - 1 ; i < this.board.length ; i--) {
-					if (this.board[pieceX][i] === null) {
+					if (this.board[i][pieceX] === null) {
 						possibleMoves.push({x: pieceX, y: i});
 					} else {
-						if (this.board[pieceX][i].color !== piece.color) {
+						if (this.board[i][pieceX].color !== piece.color) {
 							possibleMoves.push({x: pieceX, y: i});
 						}
 						break;
