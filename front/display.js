@@ -57,3 +57,9 @@ for (let i = 0; i < 9; i++) {
 for (let i = 0; i < chessCoordInit.length; i++) {
 	document.getElementById(chessCoordInit[i]).innerHTML = `<img src="public/pieces/${chessPieceInit[i]}.png" onclick="getPossibleMoves('${chessPieceInit[i]+i}')" alt="${chessPieceInit[i]}" class="piece" id="${chessPieceInit[i]+i}">`;
 }
+
+export function displayPossibleMoves(IdList){
+    for (let i = 0; i < IdList.length; i++) {
+        document.getElementById(IdList[i]).classList += "possibleMove";
+    }
+}
