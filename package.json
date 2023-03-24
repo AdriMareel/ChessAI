@@ -4,7 +4,7 @@
   "description": "Full-Stack web app built with NodeJS, Chess AI with pruning & min-max",
   "main": "index.js",
   "scripts": {
-	"dev": "nodemon index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
+    "nodemon": "^2.0.21",
     "path": "^0.12.7"
   }
 }

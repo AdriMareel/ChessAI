@@ -18,5 +18,5 @@ let game = new Game();
 
 //routes
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/front/index.html');
+    res.sendFile(__dirname + '/front/menu.html');
 });
