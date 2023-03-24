@@ -21,22 +21,22 @@ module.exports = class Game {
 
 		for (let x = 0 ; x < this.board.length ; x++) {
 			for(let y = 0 ; y < this.board[x].length ; y++) {
-				if (this.board[x][y] === piece) {
+				if (this.board[y][x] === piece) {
 					pieceX = x;
 					pieceY = y;
 					break;
 				}
 			}
 		}
-
-		console.log(piece);
-		console.log("INIT POS : ",pieceX, pieceY);
 		
-
+		console.table(piece);
+		console.log("INIT POS : X ",pieceX, " Y " ,pieceY);
+		
 		switch (piece.type) {
 			case "pawn":
 				//avancée du pion
 				const pawnDir = piece.color == "white" ? 1 : -1;
+				
 				if (this.board[pieceY + pawnDir][pieceX] === null) {
 					possibleMoves.push({x: pieceX, y: pieceY + pawnDir });
 				}
@@ -52,12 +52,20 @@ module.exports = class Game {
 				//prise en diagonale
 				const oppositeColor = piece.color == "white" ? "black" : "white";
 				
-				if (pieceX > 0 && this.board[pieceX - 1][pieceX + pawnDir].color === oppositeColor) {
-					possibleMoves.push({x: pieceX + 1, y: pieceX + pawnDir});
+				if (pieceX != 0){
+					if (this.board[pieceX - 1][pieceX + pawnDir] !== null) {
+						if (this.board[pieceX - 1][pieceX + pawnDir].color === oppositeColor) {
+							possibleMoves.push({x: pieceX + 1, y: pieceX + pawnDir});
+						}
+					}
 				}
-	
-				if (pieceX < 7 && this.board[pieceX + 1][pieceX + pawnDir].color === oppositeColor) {
-					possibleMoves.push({x: pieceX - 1, y: pieceX + pawnDir});
+				
+				if (pieceX != 7){
+					if (this.board[pieceX + 1][pieceX + pawnDir] !== null) {
+						if (this.board[pieceX + 1][pieceX + pawnDir].color === oppositeColor) {
+							possibleMoves.push({x: pieceX - 1, y: pieceX + pawnDir});
+						}
+					}
 				}
 				
 			break;
