@@ -17,6 +17,7 @@ function xyToChessCoordinate(xyObj) {
 export function getPossibleMoves(chessCoordinate){
 	clickedPiece = chessCoordinate;
 	console.warn('GET POSSIBLE MOVES');
+	
 
 	const {x , y} = chessCoordinateToXY(chessCoordinate);
 	

@@ -3,9 +3,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const setupChessRoutes = require('./back/routes/chessRoutes');
 const Game = require('./back/models/Chess');
+const { resetGame } = require('./back/middleware/resetGame');
 
 const app = express();
 const port = 3000;
+
+let game = new Game();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,6 +23,11 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/front/index.html');
 });
 
-let game = new Game();
+app.get('/game', (req, res, next) => {
+    req.game = game;
+    next();
+}, resetGame, (req, res) => {
+    res.sendFile(__dirname + '/front/chessBoard.html');
+});
 
 setupChessRoutes(app,game);

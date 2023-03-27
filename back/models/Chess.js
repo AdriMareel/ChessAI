@@ -14,6 +14,20 @@ module.exports = class Game {
 	  ];
 	}
 
+	reset(){
+		delete this.board;
+		this.board = [
+			[new Piece("white", "rook"), new Piece("white", "knight"), new Piece("white", "bishop"), new Piece("white", "queen"), new Piece("white", "king"), new Piece("white", "bishop"), new Piece("white", "knight"), new Piece("white", "rook")],
+			[new Piece("white", "pawn"), new Piece("white", "pawn"), new Piece("white", "pawn"), new Piece("white", "pawn"), new Piece("white", "pawn"), new Piece("white", "pawn"), new Piece("white", "pawn"), new Piece("white", "pawn")],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[null, null, null, null, null, null, null, null],
+			[new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn")],
+			[new Piece("black", "rook"), new Piece("black", "knight"), new Piece("black", "bishop"), new Piece("black", "queen"), new Piece("black", "king"), new Piece("black", "bishop"), new Piece("black", "knight"), new Piece("black", "rook")]
+		  ];
+	}
+
 	getPossibleMoves(piece) {
 		const possibleMoves = [];
 		let pieceX;
@@ -329,6 +343,7 @@ module.exports = class Game {
 	}
 	
 	movePiece(startX, startY, endX, endY) {
+	
 	  console.log(this.board[startY][startX]);
 	  console.log(this.board[endY][endX]);
 

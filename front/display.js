@@ -82,7 +82,6 @@ export function removePossibleMoves(){
 
 export function toggleMoveMode(){
 	for (let item of document.getElementsByClassName("possibleMove")) {
-		
 		const newElement = item.cloneNode(true);
 		item.replaceWith(newElement);
 		newElement.addEventListener('click', () => move(clickedPiece, item.id));
@@ -90,7 +89,6 @@ export function toggleMoveMode(){
 }
 
 export function displayMove(piece, destination){
-	console.log(piece,destination);
 	document.getElementById(destination).innerHTML = document.getElementById(piece).innerHTML;
 	document.getElementById(piece).innerHTML = "";
 }
