@@ -1,4 +1,4 @@
-import { getPossibleMoves } from "./chess.js";
+import { getPossibleMoves, clickedPiece, move, } from "./chess.js";
 
 const chessCoordInit = [
 	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", // White pieces
@@ -55,9 +55,16 @@ for (let i = 0; i < 9; i++) {
 	board.appendChild(row);
 }
 
-for (let item of document.getElementsByClassName("square")) {
-	item.addEventListener("click", () => getPossibleMoves(item.id));
+export function untoggleMoveMode(){
+	for (let item of document.getElementsByClassName("square")) {
+		//delete previous event listeners
+		const newElement = item.cloneNode(true);
+		item.replaceWith(newElement);
+		newElement.addEventListener("click", () => getPossibleMoves(item.id));
+		newElement.classList.remove("possibleMove");
+	}
 }
+untoggleMoveMode();
 
 //chess pieces initialisation
 for (let i = 0; i < chessCoordInit.length; i++) {
@@ -71,4 +78,19 @@ export function displayPossibleMoves(id){
 export function removePossibleMoves(){
 	const possibleMoves = document.querySelectorAll('.possibleMove');
   	possibleMoves.forEach(move => move.classList.remove('possibleMove'));
+}
+
+export function toggleMoveMode(){
+	for (let item of document.getElementsByClassName("possibleMove")) {
+		
+		const newElement = item.cloneNode(true);
+		item.replaceWith(newElement);
+		newElement.addEventListener('click', () => move(clickedPiece, item.id));
+	}
+}
+
+export function displayMove(piece, destination){
+	console.log(piece,destination);
+	document.getElementById(destination).innerHTML = document.getElementById(piece).innerHTML;
+	document.getElementById(piece).innerHTML = "";
 }

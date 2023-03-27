@@ -6,8 +6,8 @@ module.exports = (app, game) => {
     });
 
     app.post('/movePiece', (req, res) => {
-        const {x, y, newX, newY} = req.body;
+        const {x, y, xNext, yNext} = req.body;
 
-        res.send(game.movePiece(x, y, newX, newY));
+        res.send(game.movePiece(x, y, xNext, yNext));
     });
 }

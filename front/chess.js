@@ -1,4 +1,6 @@
-import { removePossibleMoves, displayPossibleMoves } from './display.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove } from './display.js';
+
+export let clickedPiece = null;
 
 function chessCoordinateToXY(chessCoord) {
 	const file = chessCoord[0].toLowerCase().charCodeAt(0) - 97; 
@@ -13,6 +15,9 @@ function xyToChessCoordinate(xyObj) {
 }
 
 export function getPossibleMoves(chessCoordinate){
+	clickedPiece = chessCoordinate;
+	console.warn('GET POSSIBLE MOVES');
+
 	const {x , y} = chessCoordinateToXY(chessCoordinate);
 	
 	fetch('/getPossibleMoves', {	
@@ -22,7 +27,7 @@ export function getPossibleMoves(chessCoordinate){
 		},
 		body: JSON.stringify({ 
 			x : x,
-			y  : y,
+			y : y,
 		})
 	})
 		.then(res => res.json())
@@ -32,6 +37,35 @@ export function getPossibleMoves(chessCoordinate){
 			data.forEach(element => {
 				console.log(element);
 				displayPossibleMoves(xyToChessCoordinate(element));
+				toggleMoveMode();
 			});
 		});
+}
+
+export function move(chessCoordinatePrevious, chessCoordinateNext){
+	const {x , y} = chessCoordinateToXY(chessCoordinatePrevious);
+	const {x : xNext , y : yNext} = chessCoordinateToXY(chessCoordinateNext);
+	
+	console.warn('MOVE');
+	console.log(chessCoordinatePrevious, chessCoordinateNext);
+
+	fetch('/movePiece', {
+		method: 'POST',
+		headers: {
+		'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			x : x,
+			y : y,
+			xNext : xNext,
+			yNext : yNext,
+		})
+	})
+		.then(res => res.json())
+		.then(data => {
+			untoggleMoveMode();
+			clickedPiece = null;
+			displayMove(chessCoordinatePrevious, chessCoordinateNext);
+		});
+		
 }

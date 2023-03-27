@@ -19,6 +19,10 @@ module.exports = class Game {
 		let pieceX;
 		let pieceY;
 
+		if (piece === null) {
+			return possibleMoves;
+		}
+
 		for (let x = 0 ; x < this.board.length ; x++) {
 			for(let y = 0 ; y < this.board[x].length ; y++) {
 				if (this.board[y][x] === piece) {
@@ -324,15 +328,17 @@ module.exports = class Game {
 		return possibleMoves;
 	}
 	
-	// Method to move a piece on the board
-	movePiece(startY, startX, endY, endX) {
-	  // Check if the start position contains a piece
+	movePiece(startX, startY, endX, endY) {
+	  console.log(this.board[startY][startX]);
+	  console.log(this.board[endY][endX]);
+
 	  if (!this.board[startY][startX]) {
 		console.log("No piece at the start position!");
 		return false;
 	  }
 	  
 	  // Check if the end position is empty or contains an opponent's piece
+	  
 	  if (this.board[endY][endX] && this.board[endY][endX].color === this.board[startY][startX].color) {
 		console.log("Can't capture your own piece!");
 		return false;
@@ -341,7 +347,10 @@ module.exports = class Game {
 	  // Move the piece to the end position
 	  this.board[endY][endX] = this.board[startY][startX];
 	  this.board[startY][startX] = null;
+
+	  this.board[endY][endX].moved = true;
+	  console.log("Moved piece from " + startX + "," + startY + " to " + endX + "," + endY);
 	  
 	  return true;
 	}
-  }
+}
