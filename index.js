@@ -20,7 +20,7 @@ app.listen(port, () => {
 
 //routes
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/front/index.html');
+    res.sendFile(__dirname + '/front/menu.html');
 });
 
 app.get('/game', (req, res, next) => {

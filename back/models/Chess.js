@@ -175,147 +175,149 @@ module.exports = class Game {
 			break;
 			
 			case "bishop":
-				for (let i = 1 ; i < this.board.length ; i++) {
-					if (pieceX + i < this.board.length && pieceY + i < this.board.length) {
-						if (this.board[pieceY + i][pieceX + i] === null) {
-							possibleMoves.push({x: pieceX + i, y: pieceY + i});
-						} else {
-							if (this.board[pieceY + i][pieceX + i].color !== piece.color) {
-								possibleMoves.push({x: pieceX + i, y: pieceY + i});
-							}
-							break;
-						}
-					}
+  // mouvement vers la haut droite
+  for (let i = 1; pieceX + i < this.board.length && pieceY + i < this.board.length; i++) {
+    if (this.board[pieceY + i][pieceX + i] === null) {
+      possibleMoves.push({x: pieceX + i, y: pieceY + i});
+    } else {
+      if (this.board[pieceY + i][pieceX + i].color !== piece.color) {
+        possibleMoves.push({x: pieceX + i, y: pieceY + i});
+      }
+      break;
+    }
+  }
+  
+  // mouvement vers la haut gauche
+  for (let i = 1; pieceX - i >= 0 && pieceY + i < this.board.length; i++) {
+    if (this.board[pieceY + i][pieceX - i] === null) {
+      possibleMoves.push({x: pieceX - i, y: pieceY + i});
+    } else {
+      if (this.board[pieceY + i][pieceX - i].color !== piece.color) {
+        possibleMoves.push({x: pieceX - i, y: pieceY + i});
+      }
+      break;
+    }
+  }
+  
+  // mouvement vers la bas gauche
+  for (let i = 1; pieceX - i >= 0 && pieceY - i >= 0; i++) {
+    if (this.board[pieceY - i][pieceX - i] === null) {
+      possibleMoves.push({x: pieceX - i, y: pieceY - i});
+    } else {
+      if (this.board[pieceY - i][pieceX - i].color !== piece.color) {
+        possibleMoves.push({x: pieceX - i, y: pieceY - i});
+      }
+      break;
+    }
+  }
+  
+  // mouvement vers la bas droite
+  for (let i = 1; pieceX + i < this.board.length && pieceY - i >= 0; i++) {
+    if (this.board[pieceY - i][pieceX + i] === null) {
+      possibleMoves.push({x: pieceX + i, y: pieceY - i});
+    } else {
+      if (this.board[pieceY - i][pieceX + i].color !== piece.color) {
+        possibleMoves.push({x: pieceX + i, y: pieceY - i});
+      }
+      break;
+    }
+  }
+  
+  break;
 
-					if (pieceX - i >= 0 && pieceY - i >= 0) {
-						if (this.board[pieceY - i][pieceX - i] === null) {
-							possibleMoves.push({x: pieceX - i, y: pieceY - i});
-						} else {
-							if (this.board[pieceY - i][pieceX - i].color !== piece.color) {
-								possibleMoves.push({x: pieceX - i, y: pieceY - i});
-							}
-							break;
-						}
-					}
-
-					if (pieceX + i < this.board.length && pieceY - i >= 0) {
-						if (this.board[pieceY - i][pieceX + i] === null) {
-							possibleMoves.push({x: pieceX + i, y: pieceY - i});
-						} else {
-							if (this.board[pieceY - i][pieceX + i].color !== piece.color) {
-								possibleMoves.push({x: pieceX + i, y: pieceY - i});
-							}
-							break;
-						}
-					}
-
-					if (pieceX - i >= 0 && pieceY + i < this.board.length) {
-						if (this.board[pieceY + i][pieceX - i] === null) {
-							possibleMoves.push({x: pieceX - i, y: pieceY + i});
-						} else {
-							if (this.board[pieceY + i][pieceX - i].color !== piece.color) {
-								possibleMoves.push({x: pieceX - i, y: pieceY + i});
-							}
-							break;
-						}
-					}
-				}
-
-				break;
-
-			case "queen":
-				// Horizontal and vertical moves
-				for (let i = pieceX + 1 ; i < this.board.length ; i++) {
-					if (this.board[pieceY][i] === null) {
-						possibleMoves.push({x: i, y: pieceY});
-					} else {
-						if (this.board[pieceY][i].color !== piece.color) {
+				case "queen":
+					// Horizontal and vertical moves
+					for (let i = pieceX + 1 ; i < this.board.length ; i++) {
+						if (this.board[pieceY][i] === null) {
 							possibleMoves.push({x: i, y: pieceY});
+						} else {
+							if (this.board[pieceY][i].color !== piece.color) {
+								possibleMoves.push({x: i, y: pieceY});
+							}
+							break;
 						}
-						break;
 					}
-				}
-
-				for (let i = pieceX - 1 ; i < this.board.length ; i--) {
-					if (this.board[pieceY][i] === null) {
-						possibleMoves.push({x: i, y: pieceY});
-					} else {
-						if (this.board[pieceY][i].color !== piece.color) {
-							possibleMoves.push({x: i, y: pieceY});
-						}
-						break;
-					}
-				}
-
-				for (let i = pieceY + 1 ; i < this.board.length ; i++) {
-					if (this.board[i][pieceX] === null) {
-						possibleMoves.push({x: pieceX, y: i});
-					} else {
-						if (this.board[i][pieceX].color !== piece.color) {
-							possibleMoves.push({x: pieceX, y: i});
-						}
-						break;
-					}
-				}
-
-				for (let i = pieceY - 1 ; i < this.board.length ; i--) {
-					if (this.board[i][pieceX] === null) {
-						possibleMoves.push({x: pieceX, y: i});
-					} else {
-						if (this.board[i][pieceX].color !== piece.color) {
-							possibleMoves.push({x: pieceX, y: i});
-						}
-						break;
-					}
-				}
 				
-				//diagonals
-				for (let i = 1 ; i < this.board.length ; i++) {
-					if (pieceX + i < this.board.length && pieceY + i < this.board.length) {
-						if (this.board[pieceY + i][pieceX + i] === null) {
-							possibleMoves.push({x: pieceX + i, y: pieceY + i});
+					for (let i = pieceX - 1 ; i >= 0 ; i--) {
+						if (this.board[pieceY][i] === null) {
+							possibleMoves.push({x: i, y: pieceY});
 						} else {
-							if (this.board[pieceY + i][pieceX + i].color !== piece.color) {
+							if (this.board[pieceY][i].color !== piece.color) {
+								possibleMoves.push({x: i, y: pieceY});
+							}
+							break;
+						}
+					}
+				
+					for (let i = pieceY + 1 ; i < this.board.length ; i++) {
+						if (this.board[i][pieceX] === null) {
+							possibleMoves.push({x: pieceX, y: i});
+						} else {
+							if (this.board[i][pieceX].color !== piece.color) {
+								possibleMoves.push({x: pieceX, y: i});
+							}
+							break;
+						}
+					}
+				
+					for (let i = pieceY - 1 ; i >= 0 ; i--) {
+						if (this.board[i][pieceX] === null) {
+							possibleMoves.push({x: pieceX, y: i});
+						} else {
+							if (this.board[i][pieceX].color !== piece.color) {
+								possibleMoves.push({x: pieceX, y: i});
+							}
+							break;
+						}
+					}
+				  
+					// Diagonal moves
+					for (let i = 1; i < this.board.length; i++) {
+						// Top left
+						for (let i = 1; pieceX + i < this.board.length && pieceY + i < this.board.length; i++) {
+							if (this.board[pieceY + i][pieceX + i] === null) {
+							  possibleMoves.push({x: pieceX + i, y: pieceY + i});
+							} else {
+							  if (this.board[pieceY + i][pieceX + i].color !== piece.color) {
 								possibleMoves.push({x: pieceX + i, y: pieceY + i});
+							  }
+							  break;
 							}
-							break;
-						}
-					}
-
-					if (pieceX - i >= 0 && pieceY - i >= 0) {
-						if (this.board[pieceY - i][pieceX - i] === null) {
-							possibleMoves.push({x: pieceX - i, y: pieceY - i});
-						} else {
-							if (this.board[pieceY - i][pieceX - i].color !== piece.color) {
-								possibleMoves.push({x: pieceX - i, y: pieceY - i});
-							}
-							break;
-						}
-					}
-
-					if (pieceX + i < this.board.length && pieceY - i >= 0) {
-						if (this.board[pieceY - i][pieceX + i] === null) {
-							possibleMoves.push({x: pieceX + i, y: pieceY - i});
-						} else {
-							if (this.board[pieceY - i][pieceX + i].color !== piece.color) {
-								possibleMoves.push({x: pieceX + i, y: pieceY - i});
-							}
-							break;
-						}
-					}
-
-					if (pieceX - i >= 0 && pieceY + i < this.board.length) {
-						if (this.board[pieceY + i][pieceX - i] === null) {
-							possibleMoves.push({x: pieceX - i, y: pieceY + i});
-						} else {
-							if (this.board[pieceY + i][pieceX - i].color !== piece.color) {
+						  }
+						// Top right
+						for (let i = 1; pieceX - i >= 0 && pieceY + i < this.board.length; i++) {
+							if (this.board[pieceY + i][pieceX - i] === null) {
+							  possibleMoves.push({x: pieceX - i, y: pieceY + i});
+							} else {
+							  if (this.board[pieceY + i][pieceX - i].color !== piece.color) {
 								possibleMoves.push({x: pieceX - i, y: pieceY + i});
+							  }
+							  break;
 							}
-							break;
-						}
+						  }
+						// Bottom left
+						for (let i = 1; pieceX - i >= 0 && pieceY - i >= 0; i++) {
+							if (this.board[pieceY - i][pieceX - i] === null) {
+							  possibleMoves.push({x: pieceX - i, y: pieceY - i});
+							} else {
+							  if (this.board[pieceY - i][pieceX - i].color !== piece.color) {
+								possibleMoves.push({x: pieceX - i, y: pieceY - i});
+							  }
+							  break;
+							}
+						  }
+						// Bottom right
+						for (let i = 1; pieceX + i < this.board.length && pieceY - i >= 0; i++) {
+							if (this.board[pieceY - i][pieceX + i] === null) {
+							  possibleMoves.push({x: pieceX + i, y: pieceY - i});
+							} else {
+							  if (this.board[pieceY - i][pieceX + i].color !== piece.color) {
+								possibleMoves.push({x: pieceX + i, y: pieceY - i});
+							  }
+							  break;
+							}
+					  }
 					}
-				}
-			break;
 			
 			case "king":
 				const kingMoves = [

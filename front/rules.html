@@ -15,25 +15,96 @@
             <p>Les échecs est un jeu de stratégie pour deux joueurs, joué sur un plateau de 64 cases. Chaque joueur a 16 pièces, composées d'un roi, d'une reine, de deux fous, de deux cavaliers, de deux tours et de huit pions.</p>
         </section>
         <section>
-            <h2>Déplacements de base</h2>
-            <p>Chaque pièce se déplace d'une manière différente :</p>
-            <ul>
-                <li>Le roi se déplace d'une case dans toutes les directions.</li>
-                <li>La reine se déplace en diagonale, en ligne droite ou en oblique sur toutes les cases du plateau.</li>
-                <li>Les fous se déplacent en diagonale sur les cases de la même couleur que celle sur laquelle ils se trouvent au départ.</li>
-                <li>Les cavaliers se déplacent en « L », c'est-à-dire de deux cases dans une direction, puis d'une case perpendiculaire.</li>
-                <li>Les tours se déplacent en ligne droite dans toutes les directions.</li>
-                <li>Les pions se déplacent d'une case en avant, sauf lors de leur premier mouvement, où ils peuvent avancer de deux cases, et lorsqu'ils capturent une pièce, où ils se déplacent en diagonale.</li>
-            </ul>
+          <h2>Animations GIF</h2>
+          <p>Pour mieux comprendre les déplacements des pièces, voici des animations GIF qui montrent comment chaque pièce se déplace :</p>
+          <div class="gif-container">
+              <div class="gif">
+                  <img src="ChessMoves/kingmove.gif" alt="Déplacement du roi">
+                  <p>Le roi se déplace d'une case dans toutes les directions.</p>
+              </div>
+              <div class="gif">
+                <img src="ChessMoves/queenmove.gif" alt="Déplacement de la reine">
+                  <p>La reine se déplace en diagonale, en ligne droite ou en oblique sur toutes les cases du plateau.</p>
+                  </div>
+                  <div class="gif">
+                  <img src="ChessMoves/bishopmove.gif" alt="Déplacement du fou">
+                  <p>Les fous se déplacent en diagonale sur les cases de la même couleur que celle sur laquelle ils se trouvent au départ.</p>
+                  </div>
+                  <div class="gif">
+                  <img src="ChessMoves/knightmove.gif" alt="Déplacement du cavalier">
+                  <p>Les cavaliers se déplacent en « L », c'est-à-dire de deux cases dans une direction, puis d'une case perpendiculaire.</p>
+                  </div>
+                  <div class="gif">
+                  <img src="ChessMoves/rookmove.gif" alt="Déplacement de la tour">
+                  <p>Les tours se déplacent en ligne droite dans toutes les directions.</p>
+                  </div>
+                  <div class="gif">
+                  <img src="ChessMoves/pawnmove.gif" alt="Déplacement du pion">
+                  <p>Les pions se déplacent d'une case en avant, sauf lors de leur premier mouvement, où ils peuvent avancer de deux cases, et lorsqu'ils capturent une pièce, où ils se déplacent en diagonale.</p>
+                  </div>
+                  </div>
         </section>
         <section>
-            <h2>Déplacements spéciaux</h2>
-            <p>Il existe également des mouvements spéciaux :</p>
-            <ul>
-                <li>Le roque, où le roi et une tour peuvent échanger leur position, à condition que le roi n'ait pas été déplacé et que la tour ne soit pas bloquée.</li>
-                <li>L'en passant, où un pion peut capturer un pion adverse qui vient d'avancer de deux cases lors de son premier mouvement, en le prenant comme s'il n'avait avancé que d'une seule case.</li>
-                <li>La promotion, où un pion peut être promu en une autre pièce lorsqu'il atteint la huitième rangée du plateau.</li>
-            </ul>
+          <h2>Déplacements spéciaux</h2>
+          <p>Il existe également des mouvements spéciaux :</p>
+          <ul>
+            <li>Le roque, où le roi et une tour peuvent échanger leur position, à condition que le roi n'ait pas été déplacé et que la tour ne soit pas bloquée.</li>
+            <div class="gif">
+              <h3>Le roque</h3>
+              <img src="ChessMoves/castling1.gif" alt="Le roque">
+              <img src="ChessMoves/castling2.gif" alt="Le roque">
+            </div>
+            <li>L'en passant, où un pion peut capturer un pion adverse qui vient d'avancer de deux cases lors de son premier mouvement, en le prenant comme s'il n'avait avancé que d'une seule case.</li>
+            <div class="gif">
+              <h3>L'en passant</h3>
+              <img src="ChessMoves/enpassant.gif" alt="L'en passant">
+            </div>
+            <li>La promotion, où un pion peut être promu en une autre pièce lorsqu'il atteint la huitième rangée du plateau.</li>
+            <div class="gif">
+              <h3>La promotion</h3>
+              <img src="ChessMoves/promotion.gif" alt="La promotion">
+            </div>
+          </ul>
+        </section>
+        <section id="winning-rules">
+          <h2>Comment gagner aux échecs</h2>
+          <p>Pour gagner une partie d'échecs, il existe trois façons :</p>
+          <ol>
+            <li>Faire échec et mat : il s'agit de mettre le roi adverse en échec, sans que celui-ci puisse se déplacer sur une case où il ne serait plus en échec. Si cela se produit, la partie est gagnée.</li>
+            <li>Gagner par abandon : si l'adversaire abandonne la partie, vous gagnez automatiquement.</li>
+            <li>Gagner par le temps : si l'une des deux joueurs dépasse le temps imparti pour jouer, il perd la partie.</li>
+          </ol>
+          <p>Il est également possible de faire match nul dans certaines situations :</p>
+          <ul>
+            <li>Pat : si le joueur n'a plus aucun coup légal à jouer, mais que son roi n'est pas en échec, la partie est considérée comme un match nul.</li>
+            <img src="ChessMoves/stalemate.gif" alt="Le stalemate">
+            <li>Nulle par accord : les deux joueurs peuvent décider de mettre fin à la partie en s'accordant sur un match nul.</li>
+            <li>Nulle par répétition : si la même position se répète trois fois sur l'échiquier, la partie est considérée comme un match nul.</li>
+            <li>Nulle par règle des 50 coups : si aucun pion n'a été déplacé et aucune pièce n'a été capturée au cours des 50 derniers coups, la partie est considérée comme un match nul.</li>
+          </ul>
+        </section>
+        <section id="check-rules">
+          <h2>Les checks et les défenses en échecs</h2>
+          <p>Un joueur met son adversaire en échec lorsqu'il menace de capturer son roi à son prochain coup. Il existe plusieurs façons de se défendre contre un échec :</p>
+          <ul>
+            <li>Déplacer le roi sur une case sûre où il ne sera pas menacé d'être capturé.</li>
+            <li>Interposer une pièce entre le roi et la pièce menaçante, si cela est possible.</li>
+            <li>Capturer la pièce qui met le roi en échec.</li>
+          </ul>
+          <p>Il est important de noter que chaque défense n'est pas toujours possible, car certaines pièces ne peuvent pas se déplacer ou être capturées à cause des règles du jeu. Il est donc crucial d'anticiper les coups adverses et de prévoir plusieurs plans de défense.</p>
+          <p>Voici quelques exemples de défenses possibles contre un échec :</p>
+          <div class="gif">
+            <h3>Déplacer le roi</h3>
+            <img src="ChessMoves/" alt="Déplacer le roi">
+          </div>
+          <div class="gif">
+            <h3>Interposer une pièce</h3>
+            <img src="https://media.giphy.com/media/j9XUfhwt6fd0a/giphy.gif" alt="Interposer une pièce">
+          </div>
+          <div class="gif">
+            <h3>Capturer la pièce qui met en échec</h3>
+            <img src="https://media.giphy.com/media/MZZDdKzgCwNQg/giphy.gif" alt="Capturer la pièce qui met en échec">
+          </div>
         </section>
     </main>
     <footer>
