@@ -338,6 +338,22 @@ module.exports = class Game {
 						}
 					}
 				});
+
+				if(piece.moved === false) {
+					//castling
+					if(this.board[pieceY][pieceX + 3] && this.board[pieceY][pieceX + 3].type === "rook" && this.board[pieceY][pieceX + 3].moved === false) {
+						if(this.board[pieceY][pieceX + 1] === null && this.board[pieceY][pieceX + 2] === null) {
+							possibleMoves.push({x: pieceX + 2, y: pieceY});
+						}
+					}
+					if(this.board[pieceY][pieceX - 4] && this.board[pieceY][pieceX - 4].type === "rook" && this.board[pieceY][pieceX - 4].moved === false) {
+						if(this.board[pieceY][pieceX - 1] === null && this.board[pieceY][pieceX - 2] === null && this.board[pieceY][pieceX - 3] === null) {
+							possibleMoves.push({x: pieceX - 2, y: pieceY});
+						}
+					}
+
+				
+				}
 			break;
 		}
 		console.log(possibleMoves);
