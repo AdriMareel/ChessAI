@@ -12,6 +12,7 @@ module.exports = class Game {
 		[new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn")],
 		[new Piece("black", "rook"), new Piece("black", "knight"), new Piece("black", "bishop"), new Piece("black", "queen"), new Piece("black", "king"), new Piece("black", "bishop"), new Piece("black", "knight"), new Piece("black", "rook")]
 	  ];
+	  this.turn = "white";
 	}
 
 	reset(){
@@ -26,6 +27,7 @@ module.exports = class Game {
 			[new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn"), new Piece("black", "pawn")],
 			[new Piece("black", "rook"), new Piece("black", "knight"), new Piece("black", "bishop"), new Piece("black", "queen"), new Piece("black", "king"), new Piece("black", "bishop"), new Piece("black", "knight"), new Piece("black", "rook")]
 		  ];
+		this.turn = "white";
 	}
 
 	getPossibleMoves(piece) {
@@ -33,7 +35,7 @@ module.exports = class Game {
 		let pieceX;
 		let pieceY;
 
-		if (piece === null) {
+		if (piece === null || piece.color != this.turn) {
 			return possibleMoves;
 		}
 
@@ -383,7 +385,17 @@ module.exports = class Game {
 
 	  this.board[endY][endX].moved = true;
 	  console.log("Moved piece from " + startX + "," + startY + " to " + endX + "," + endY);
-	  
+
+	  this.changeTurn();
+	  console.log(this.turn);
 	  return true;
+	}
+
+	changeTurn() {
+		if (this.turn === "white") {
+			this.turn = "black";
+		} else if (this.turn === "black") {
+			this.turn = "white";
+		}
 	}
 }
