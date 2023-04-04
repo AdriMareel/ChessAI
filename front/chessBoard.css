@@ -48,3 +48,7 @@ body{
 .possibleMove{
 	background-color: #25a6ce;
 }
+
+.checked{
+	background-color: rgb(134, 39, 39);
+}

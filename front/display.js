@@ -92,3 +92,20 @@ export function displayMove(piece, destination){
 	document.getElementById(destination).innerHTML = document.getElementById(piece).innerHTML;
 	document.getElementById(piece).innerHTML = "";
 }
+
+
+//put the king of color in check
+export function isCheck(color){
+		//get element with alt color-king
+		let king = document.querySelector(`img[alt="${color}-king"]`);
+		//get the id of the king
+		let kingId = king.parentElement.id;
+		//add the class check to the king parent id
+		document.getElementById(kingId).classList.add("checked");
+};
+
+export function clearCheck(){
+	for (let item of document.getElementsByClassName("square")) {
+		item.classList.remove("checked");
+	}
+}

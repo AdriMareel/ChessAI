@@ -1,4 +1,4 @@
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove } from './display.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck} from './display.js';
 
 export let clickedPiece = null;
 
@@ -66,20 +66,18 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 		let chessCoordinatePreviousR 
 		let chessCoordinateNextR
 		chessCoordinateNextR = ""
-		console.log("roque")
+		
 		//si le roque est petit
 		let roque=false
 		if(xNext - x == 2){
 			chessCoordinatePreviousR = "h" + chessCoordinatePrevious.slice(1, 2)
 			chessCoordinateNextR = "f" + chessCoordinateNext.slice(1, 2)
-			//on bouge la tour
-			console.log("petit roque")
+			//on bouge la tour		
 			roque = true
 		}
 		//si le roque est grand
 		else if(x - xNext == 2){
-			//on bouge la tour
-			console.log("grand roque")
+			//on bouge la tour		
 			roque = true
 			chessCoordinatePreviousR = "a" + chessCoordinatePrevious.slice(1, 2)
 			chessCoordinateNextR = "d" + chessCoordinateNext.slice(1, 2)
@@ -133,8 +131,26 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 			clickedPiece = null;
 			displayMove(chessCoordinatePrevious, chessCoordinateNext);
 		});
-		
-
-
 	
+		
+	fetch('/isChecked', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json'
+			},
+		
+		})
+			.then(res => res.json())
+			.then(data => {
+				//data is send with black and white parameter containing true or false
+				//if true, it's check
+				//if false, it's not check
+				console.log("isCheck", data)
+				//read "black" and "white" parameter from object
+				let blackCheck = data.black
+				let whiteCheck = data.white
+				clearCheck()
+				if(whiteCheck){isCheck("white")}
+				if(blackCheck){isCheck("black")}
+			});
 }
