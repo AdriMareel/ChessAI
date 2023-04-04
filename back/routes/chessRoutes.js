@@ -10,4 +10,11 @@ module.exports = (app, game) => {
 
         res.send(game.movePiece(x, y, xNext, yNext));
     });
+
+	app.post('/isChecked', (req, res) => {
+		const white = game.checkIfChecked(game.board, "white");
+		const black = game.checkIfChecked(game.board, "black");
+
+		res.send({white, black});
+	});
 }
