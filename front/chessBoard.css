@@ -45,10 +45,18 @@ body{
 	text-align: center;
 }
 
-.possibleMove{
-	background-color: #25a6ce;
+.dark.possibleMove{
+	background: radial-gradient(circle at center, #25a6ce, #b58863 75%);
 }
 
-.checked{
-	background-color: rgb(134, 39, 39);
+.light.possibleMove{
+	background: radial-gradient(circle at center, #25a6ce, #f0d9b5 75%);
+}
+
+.dark.checked{
+	background: radial-gradient(circle at center, rgb(255, 67, 67), #b58863 75%);
+}
+
+.light.checked{
+	background: radial-gradient(circle at center, rgb(255, 67, 67), #f0d9b5 75%);
 }
