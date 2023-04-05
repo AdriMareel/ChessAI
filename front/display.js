@@ -71,8 +71,17 @@ for (let i = 0; i < chessCoordInit.length; i++) {
 	document.getElementById(chessCoordInit[i]).innerHTML = `<img src="public/pieces/${chessPieceInit[i]}.png" alt="${chessPieceInit[i]}" class="piece" >`;
 }
 
+export function displaySelected(id){
+    document.getElementById(id).classList.add("selected");
+}
+
 export function displayPossibleMoves(id){
     document.getElementById(id).classList.add("possibleMove");
+}
+
+export function removeSelected(){
+	const possibleMoves = document.querySelectorAll('.selected');
+  	possibleMoves.forEach(move => move.classList.remove('selected'));
 }
 
 export function removePossibleMoves(){

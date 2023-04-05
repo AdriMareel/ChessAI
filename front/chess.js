@@ -1,4 +1,4 @@
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck} from './display.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected} from './display.js';
 
 export let clickedPiece = null;
 
@@ -17,8 +17,8 @@ function xyToChessCoordinate(xyObj) {
 export function getPossibleMoves(chessCoordinate){
 	clickedPiece = chessCoordinate;
 	console.warn('GET POSSIBLE MOVES');
-	
-
+	removeSelected()
+	displaySelected(chessCoordinate)
 	const {x , y} = chessCoordinateToXY(chessCoordinate);
 	
 	fetch('/getPossibleMoves', {	
@@ -34,7 +34,7 @@ export function getPossibleMoves(chessCoordinate){
 		.then(res => res.json())
 		.then(data => {
 			removePossibleMoves();
-
+			
 			data.forEach(element => {
 				console.log(element);
 				displayPossibleMoves(xyToChessCoordinate(element));
@@ -45,7 +45,7 @@ export function getPossibleMoves(chessCoordinate){
 
 export function move(chessCoordinatePrevious, chessCoordinateNext){
 
-	
+	removeSelected()
 	const {x , y} = chessCoordinateToXY(chessCoordinatePrevious);
 	const {x : xNext , y : yNext} = chessCoordinateToXY(chessCoordinateNext);
 	

@@ -60,3 +60,11 @@ body{
 .light.checked{
 	background: radial-gradient(circle at center, rgb(255, 67, 67), #f0d9b5 75%);
 }
+
+.light.selected{
+	background: radial-gradient(circle at center, #25ce90, #f0d9b5 75%);
+}
+
+.dark.selected{
+	background: radial-gradient(circle at center, #25ce90, #b58863 75%);
+}
