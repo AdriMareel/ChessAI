@@ -431,7 +431,6 @@ module.exports = class Game {
 				}
 			}
 		}
-		console.log("KING POS", kingX, kingY);
 
 		let possibleMoves = [];
 		//check if any of the opponent's pieces can move to the king's position
@@ -442,9 +441,7 @@ module.exports = class Game {
 				}
 			}
 		}
-		console.log("--------- POSSIBLE MOVES ---------")
 		possibleMoves = possibleMoves.flat();
-		console.log(possibleMoves);
 
 		//check if any of the possible moves is the king's position
 		for (let k = 0; k < possibleMoves.length; k++) {
