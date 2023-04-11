@@ -12,6 +12,14 @@ module.exports = (app, game, engine) => {
 		engine.update(game.board, game.turn);
     });
 
+    app.post('/promotion', (req, res) => {
+        const {promotion, x, y} = req.body;
+        
+        res.send(game.promotion(promotion, x, y));
+        console.log("promotion time", promotion, x, y)
+		
+    });
+
 	app.post('/isChecked', (req, res) => {
 		const white = game.checkIfChecked(game.board, "white");
 		const black = game.checkIfChecked(game.board, "black");

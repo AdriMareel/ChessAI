@@ -118,3 +118,12 @@ export function clearCheck(){
 		item.classList.remove("checked");
 	}
 }
+
+export function promoting(id, futurePiece){
+	//get the alt of the id
+	let piece = document.getElementById(id).firstChild.alt;
+	//get the 6first characcters of the piece
+	let color = piece.substring(0, 5);
+	
+	document.getElementById(id).innerHTML = `<img src="public/pieces/${color}-${futurePiece}.png" alt="${color+futurePiece}" class="piece" >`;
+}

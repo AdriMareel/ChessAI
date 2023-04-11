@@ -388,6 +388,23 @@ module.exports = class Game {
 		return legalMoves;
 	}
 
+
+
+	promotion(promotionTo, x,y) {
+		console.log("promotion time");
+		//get piece at x and y
+		const piece = this.board[y][x];
+		//remove piece from board
+		this.board[y][x] = null;
+		//create new piece
+		const newPiece = new Piece(piece.color, promotionTo);
+		//add new piece to board
+		this.board[y][x] = newPiece;
+
+		return true;
+	}
+
+
 	movePiece(startX, startY, endX, endY) {
 		if (!this.board[startY][startX]) {
 			console.log("No piece at the start position!");

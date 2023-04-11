@@ -1,4 +1,4 @@
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected} from './display.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected, promoting} from './display.js';
 
 export let clickedPiece = null;
 
@@ -81,8 +81,6 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 			roque = true
 			chessCoordinatePreviousR = "a" + chessCoordinatePrevious.slice(1, 2)
 			chessCoordinateNextR = "d" + chessCoordinateNext.slice(1, 2)
-
-			
 		}
 		if(roque==true){
 
@@ -110,7 +108,34 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 		}
 
 	}
-	
+	//we check for the promotion
+	if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")){
+		//if the pawn is on the last rank
+		console.log("promotion!")
+		if(chessCoordinateNext.slice(1, 2) == 1 || chessCoordinateNext.slice(1, 2) == 8){
+			//we ask the user what piece he wants to promote to
+			let promotion = prompt("What piece do you want to promote to ? (queen, rook, bishop, knight)")
+			//we send the promotion to the server
+			fetch('/promotion', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					promotion : promotion,
+					x : x,
+					y : y,
+				})
+			})
+				.then(res => res.json())
+				.then(data => {
+					console.log("promotion done")
+					if(data == true){
+						promoting(chessCoordinatePrevious, promotion)
+					}
+				});
+		}
+	}
 
 
 	fetch('/movePiece', {
