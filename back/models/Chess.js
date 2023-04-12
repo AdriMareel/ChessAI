@@ -13,6 +13,8 @@ module.exports = class Game {
 			[new Piece("black", "rook"), new Piece("black", "knight"), new Piece("black", "bishop"), new Piece("black", "queen"), new Piece("black", "king"), new Piece("black", "bishop"), new Piece("black", "knight"), new Piece("black", "rook")]
 		];
 		this.turn = "white";
+		this.moveType = "";
+		this.moveHistory = [];
 	}
 
 	reset() {
@@ -28,6 +30,8 @@ module.exports = class Game {
 			[new Piece("black", "rook"), new Piece("black", "knight"), new Piece("black", "bishop"), new Piece("black", "queen"), new Piece("black", "king"), new Piece("black", "bishop"), new Piece("black", "knight"), new Piece("black", "rook")]
 		];
 		this.turn = "white";
+		this.moveType = "";
+		this.moveHistory = [];
 	}
 
 	getPossibleMoves(board, piece, checking = false) {
@@ -399,6 +403,18 @@ module.exports = class Game {
 			console.log("Can't capture your own piece!");
 			return false;
 		}
+		// move type = move if the end position is empty
+		if (!this.board[endY][endX]) {
+            this.moveType = "move";
+        }
+        // move type = capture if the end position contains an opponent's piece
+        if(this.board[endY][endX] && this.board[endY][endX].color !== this.board[startY][startX].color) {
+            this.moveType = "capture";
+        }
+        //move type = check if the piece checks the opponent's king
+        if (this.checkIfChecked(this.board, this.board[startY][startX].color) === true) {
+            this.moveType = "check";
+        }
 
 		// Move the piece to the end position
 		this.board[endY][endX] = this.board[startY][startX];
@@ -408,6 +424,104 @@ module.exports = class Game {
 
 		this.changeTurn();
 		return true;
+	}
+
+	xyToChessCoordinate(xyObj) {
+		const file = String.fromCharCode(97 + xyObj.x);
+		const rank = xyObj.y + 1;
+		return file + rank;
+	}
+
+	displayHistory() {
+		console.log(this.moveHistory);
+	}
+
+	// update the moves history every time a piece is moved
+	updateHistory(board,piece,xEnd,yEnd,startX,startY) {
+		let move;
+		let pieceX;
+		let pieceY;
+		console.log(piece);
+		console.log(this.moveType)
+
+
+		for (let x = 0; x < board.length; x++) {
+			for (let y = 0; y < board[x].length; y++) {
+				if (board[y][x] === piece) {
+					pieceX = x;
+					pieceY = y;
+					break;
+				}
+			}
+		}
+
+		if(this.moveType === "move" && piece.type === "pawn") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			// push the move the piece made
+			this.moveHistory.push(move);
+		}
+		else if(this.moveType === "move") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			// push the move the piece made
+			this.moveHistory.push(piece.type.charAt(0)+move);
+		}
+		if(this.moveType === "capture" && piece.type === "pawn") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push(this.xyToChessCoordinate({x:startX,y:startY}).charAt(0) +"x"+move);
+		}
+		else if(this.moveType === "capture") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push(piece.type.charAt(0) +"x"+move);
+		}
+		if(this.moveType === "check" && piece.type === "pawn") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push(move+"+");
+		}
+		else if(this.moveType === "check") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push(piece.type.charAt(0)+move+"+");
+		}
+		/*if(moveType === "checkmate") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push(piece.type.charAt(0)+move+"#");
+		}*/
+		/*if(moveType === "castle") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push("O-O");
+		}
+		if(moveType === "castleLong") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push("O-O-O");
+		}
+		if(moveType === "promotion") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push(piece.type.charAt(0)+move+"="+piece.type.charAt(0));
+		}*/
+
+
+		console.log("----- HISTORY -----");
+		this.displayHistory();
+		return this.moveHistory;
 	}
 
 	changeTurn() {
