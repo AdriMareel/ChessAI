@@ -1,12 +1,14 @@
 const Piece = require("./Piece");
 const Game = require("./Chess");
+const fetch = require("node-fetch");
 
 module.exports = class Engine extends Game {
 	constructor() {
 		super();
-		let { score, moves } = this.minimax(this.board, 5, -Infinity, Infinity, true, []);
-		console.log("SCORE: ", score);
-		console.log("MOVES: ", moves);
+		this.evaluateBoard(this.board, this.turn);
+		// let { score, moves } = this.minimax(this.board, 5, -Infinity, Infinity, true, []);
+		// console.log("SCORE: ", score);
+		// console.log("MOVES: ", moves); /
 	}
 
 	update(board, turn) {
@@ -17,17 +19,16 @@ module.exports = class Engine extends Game {
 	minimax(board, depth, alpha, beta, maximizingPlayer, movesPlayed) {
 		console.log("---------DEPTH" , depth, "---------");
 		if (depth === 0 || this.isGameOver(board)) {
-			return { score: this.evaluateBoard(board), moves: movesPlayed };
+			return { score: this.evaluateBoard(board, maximizingPlayer ? "white" : "black"), moves: movesPlayed };
 		}
 	
 		const moves = this.getAllPossibleMoves(board, maximizingPlayer ? "white" : "black");
-		console.log("MOVES :", moves.length);
 		if (maximizingPlayer) {
 			let maxEval = -Infinity;
 			let bestMoves = [];
 			for (const move of moves) {
-				this.simulateMove(move);
-				const { score, moves: nextMoves } = this.minimax(this.board, depth - 1, alpha, beta, false, [...movesPlayed, move]);
+				const newBoard = this.simulateMove(move, board);
+				const { score, moves: nextMoves } = this.minimax(newBoard, depth - 1, alpha, beta, false, [...movesPlayed, move]);
 				if (score > maxEval) {
 					maxEval = score;
 					bestMoves = [move, ...nextMoves];
@@ -42,8 +43,8 @@ module.exports = class Engine extends Game {
 			let minEval = Infinity;
 			let bestMoves = [];
 			for (const move of moves) {
-				this.simulateMove(move);
-				const { score, moves: nextMoves } = this.minimax(this.board, depth - 1, alpha, beta, true, [...movesPlayed, move]);
+				const newBoard = this.simulateMove(move, board);
+				const { score, moves: nextMoves } = this.minimax(newBoard, depth - 1, alpha, beta, true, [...movesPlayed, move]);
 				if (score < minEval) {
 					minEval = score;
 					bestMoves = [move, ...nextMoves];
@@ -57,140 +58,120 @@ module.exports = class Engine extends Game {
 		}
 	}
 
-	simulateMove(action) {
+	displayBoardConsole(board) {
+		for (let i = 0; i < board.length; i++) {
+			let row = "";
+			for (let j = 0; j < board[i].length; j++) {
+				if (board[i][j] === null) {
+					row += "- ";
+				} else {
+					if (board[i][j].type == "knight"){
+						let letter = board[i][j].type[1];
+						if (board[i][j].color == "white") {
+							letter = letter.toUpperCase();
+						}
+						row += letter + " ";
+					}
+					else {
+						let letter = board[i][j].type[0];
+						if (board[i][j].color == "white") {
+							letter = letter.toUpperCase();
+						}
+						row += letter + " ";
+					}
+				}
+			}
+			console.log(row);
+		}
+	}
+
+	simulateMove(action, board) {
 		const piece = action.piece;
 		const move = action.move;
 
-		console.log("SIMULATE MOVE");
+		console.log("SIMULATE MOVE", action);
 
 		let pieceX;
 		let pieceY;
 
-		for (let i = 0; i < this.board.length; i++) {
-			for (let j = 0; j < this.board[i].length; j++) {
-				if (this.board[i][j] === piece) {
+		for (let i = 0; i < board.length; i++) {
+			for (let j = 0; j < board[i].length; j++) {
+				if (board[i][j] === piece) {
 					pieceX = j;
 					pieceY = i;
 				}
 			}
 		}
 
-		this.board[move.y][move.x] = this.board[pieceY][pieceX];
-		this.board[pieceY][pieceX] = null;
-		this.board[move.y][move.x].moved = true;
+		// Faire une copie du plateau
+		let newBoard = board.map(row => row.slice());
+
+		newBoard[move.y][move.x] = newBoard[pieceY][pieceX];
+		newBoard[pieceY][pieceX] = null;
+		newBoard[move.y][move.x].moved = true;
 
 		this.changeTurn();
+
+		return newBoard;
 	}
 
-	evaluateBoard(board) {
-		return 0;
-		let score = 0;
+	async evaluateBoard(board, color) {
+		let fen = this.getFen(board, color);
+		console.log("FEN", fen);
 
-		let pieceValues = {
-			"pawn": 1,
-			"knight": 3,
-			"bishop": 3,
-			"rook": 5,
-			"queen": 9,
-		}
+		fetch(`https://lichess.org/api/cloud-eval?fen=${fen}`)
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				console.log("FIN EVALUATE BOARD");
+				return data;
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	}
 
-		//piece values
-		for (let y = 0; y < board.length; y++) {
-			for (let x = 0; x < board[y].length; x++) {
-				const piece = board[y][x];
-				if (piece) {
-					const pieceValue = pieceValues[piece.type];
-					score += pieceValue * (piece.color === "white" ? 1 : -1);
-				}
-			}
-		}
+	getFen(board, color) {
+		let boardCopy = board.map(row => row.map(piece => piece));
+		this.displayBoardConsole(boardCopy);
 
-		//piece mobility
-		for (let y = 0; y < board.length; y++) {
-			for (let x = 0; x < board[y].length; x++) {
-				const piece = board[y][x];
-				if (piece) {
-					const possibleMoves = this.getPossibleMoves(board, piece);
-					score += possibleMoves.length * (piece.color === "white" ? 1 : -1);
-				}
-			}
-		}
+		// change the array to a fen string
+		let pieceTypes = ["pawn", "knight", "bishop", "rook", "queen", "king"];
+		let fenChar = ["P", "N", "B", "R", "Q", "K", "p", "n", "b", "r", "q", "k"];
 
-		//pawn structure
-		for (let y = 0; y < board.length; y++) {
-			for (let x = 0; x < board[y].length; x++) {
-				const piece = board[y][x];
-				if (piece && piece.type === "pawn") {
-					const pawnScore = this.evaluatePawn(board, piece, x, y);	
-					score += pawnScore * (piece.color === "white" ? 1 : -1);
-				}
-			}
-		}
-
-		//king safety
-		for (let y = 0; y < board.length; y++) {
-			for (let x = 0; x < board[y].length; x++) {
-				const piece = board[y][x];
-				if (piece && piece.type === "king") {
-					const kingScore = this.evaluateKing(board, piece, x, y);
-					score += kingScore * (piece.color === "white" ? 1 : -1);
-				}
-			}
-		}
-
-		//control of center
-		const center = [
-			[3, 3], [3, 4], [4, 3], [4, 4]
-		];
-		let whiteCenter = 0;
-		let blackCenter = 0;
-		for (let i = 0; i < center.length; i++) {
-			const [x, y] = center[i];
-			const piece = board[y][x];
-			if (piece) {
-				if (piece.color === "white") {
-					whiteCenter++;
+		let fen = "";
+		let empty = 0;
+		for (let i = 0 ; i < boardCopy.length; i++) {
+			for (let j = 0; j < boardCopy.length; j++) {
+				if (boardCopy[i][j] === null) {
+					empty++;
 				} else {
-					blackCenter++;
+					if (empty > 0) {
+						fen += empty;
+						empty = 0;
+					}
+					for (let k = 0; k < pieceTypes.length; k++) {
+						if (boardCopy[i][j].type === pieceTypes[k]) {
+							if (boardCopy[i][j].color === "white") {
+								fen += fenChar[k + 6];
+							} else {
+								fen += fenChar[k];
+							}
+						}
+					}
 				}
 			}
-		}
-		score += (whiteCenter - blackCenter) * 0.1;
-
-		//piece coordination
-		for (let y = 0; y < board.length; y++) {
-			for (let x = 0; x < board[y].length; x++) {
-				const piece = board[y][x];
-				if (piece) {
-					const pieceScore = this.evaluatePiece(board, piece, x, y);
-					score += pieceScore * (piece.color === "white" ? 1 : -1);
-				}
+			if (empty > 0) {
+				fen += empty;
+				empty = 0;
 			}
-		}
-
-		//tactical opportunities
-		for (let y = 0; y < board.length; y++) {
-			for (let x = 0; x < board[y].length; x++) {
-				const piece = board[y][x];
-				if (piece) {
-					const pieceScore = this.evaluateTactics(board, piece, x, y);
-					score += pieceScore * (piece.color === "white" ? 1 : -1);
-				}
+			if (i < boardCopy.length - 1) {
+				fen += "/";
 			}
 		}
 
-		//positional advantages
-		for (let y = 0; y < board.length; y++) {
-			for (let x = 0; x < board[y].length; x++) {
-				const piece = board[y][x];
-				if (piece) {
-					const pieceScore = this.evaluatePosition(board, piece, x, y);
-					score += pieceScore * (piece.color === "white" ? 1 : -1);
-				}
-			}
-		}
-
-		return score;
+		color === "white" ? fen += " w " : fen += " b ";
+		return fen;
 	}
 
 	getAllPossibleMoves(board, color){
