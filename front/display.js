@@ -1,17 +1,17 @@
 import { getPossibleMoves, clickedPiece, move, } from "./chess.js";
 
-const chessCoordInit = [
-	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", // White pieces
-	"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",  // White pawns
+const chessCoordInit = [	
+	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",  // Black pieces
 	"a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7", // Black pawns
-	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"  // Black pieces
+	"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",  // White pawns
+	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1" // White pieces
 ];
 
 const chessPieceInit = [
-	"white-rook", "white-knight", "white-bishop", "white-queen", "white-king", "white-bishop", "white-knight", "white-rook", // White pieces
-	"white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", // White pawns
+	"black-rook", "black-knight", "black-bishop", "black-queen", "black-king", "black-bishop", "black-knight", "black-rook",  // Black pieces
 	"black-pawn", "black-pawn", "black-pawn", "black-pawn", "black-pawn", "black-pawn", "black-pawn", "black-pawn", // Black pawns
-	"black-rook", "black-knight", "black-bishop", "black-queen", "black-king", "black-bishop", "black-knight", "black-rook"  // Black pieces
+	"white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", "white-pawn", // White pawns
+	"white-rook", "white-knight", "white-bishop", "white-queen", "white-king", "white-bishop", "white-knight", "white-rook" // White pieces
 ];
 
 let board = document.getElementById("board");
@@ -34,16 +34,16 @@ for (let i = 0; i < 9; i++) {
 			//caracteristique spéciale pour la première colonne
 			else if(j==0){
 				cell.className = "ligne";
-				cell.innerText = i;
+				cell.innerText = 9 - i;
 			}
 
 			//Pour toute les cases "normales"
 			else{
 				cell.className = "square";
-				cell.id = String.fromCharCode(96 + j) + (i);
+				cell.id = String.fromCharCode(96 + j) + (9 - i);
 				
 				// on met la classe light ou dark en fonction de la position de la case
-				if((j+i)%2==1){
+				if((j+i)%2== 0){
 					cell.classList.add("light");
 				}
 				else{
