@@ -10,8 +10,8 @@ module.exports = (app, game, engine) => {
         res.send(game.movePiece(x, y, xNext, yNext));
         game.updateHistory(game.board, game.board[yNext][xNext], xNext, yNext, x, y);
         //game.displayHistory();
-	    engine.update(game.board, game.turn);
-        engine.evaluateBoard(engine.board, engine.turn);
+	   // engine.update(game.board, game.turn);
+        //engine.evaluateBoard(engine.board, engine.turn);
     });
 
 	app.post('/isChecked', (req, res) => {

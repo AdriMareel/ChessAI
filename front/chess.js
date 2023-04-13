@@ -81,36 +81,13 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 			roque = true
 			chessCoordinatePreviousR = "a" + chessCoordinatePrevious.slice(1, 2)
 			chessCoordinateNextR = "d" + chessCoordinateNext.slice(1, 2)
-
-			
 		}
-		if(roque==true){
+		if(roque)
+		{
+		displayMove(chessCoordinatePreviousR, chessCoordinateNextR);
 
-			const {x , y} = chessCoordinateToXY(chessCoordinatePreviousR);
-			const {x : xNext , y : yNext} = chessCoordinateToXY(chessCoordinateNextR);
-			console.log("tour bougée",)
-			fetch('/movePiece', {
-				method: 'POST',
-				headers: {
-				'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					x : x,
-					y : y,
-					xNext : xNext,
-					yNext : yNext,
-				})
-			})
-				.then(res => res.json())
-				.then(data => {
-					untoggleMoveMode();
-					clickedPiece = null;
-					displayMove(chessCoordinatePreviousR, chessCoordinateNextR);
-				});
 		}
-
 	}
-	
 
 
 	fetch('/movePiece', {

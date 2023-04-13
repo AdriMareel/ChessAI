@@ -416,6 +416,39 @@ module.exports = class Game {
             this.moveType = "check";
         }
 
+		// Move type = castling long or short 
+		// Check if it's a king and if the position is the right one
+		if (this.board[startY][startX].type === "king" && this.board[startY][startX].moved === false && this.checkIfSquareIsUnderAttack(this.board) === false ) {
+			if (endX === 2) {
+				this.moveType = "castleLong";
+			}
+			if (endX === 6) {
+				this.moveType = "castleShort";
+			}
+		}
+
+		//Move the king and the rook in the same turn if it's a castling
+		if (this.moveType === "castleLong"){
+			this.board[startY][startX].moved = true;
+			this.board[startY][startX - 4].moved = true;
+			this.board[startY][startX - 2] = this.board[startY][startX];
+			this.board[startY][startX - 1] = this.board[startY][startX - 4];
+			this.board[startY][startX] = null;
+			this.board[startY][startX - 4] = null;
+			this.changeTurn();
+			return true;
+		}
+		if (this.moveType === "castleShort") {
+			this.board[startY][startX].moved = true;
+			this.board[startY][startX + 3].moved = true;
+			this.board[startY][startX + 2] = this.board[startY][startX];
+			this.board[startY][startX + 1] = this.board[startY][startX + 3];
+			this.board[startY][startX] = null;
+			this.board[startY][startX + 3] = null;
+			this.changeTurn();
+			return true;
+		}
+
 		// Move the piece to the end position
 		this.board[endY][endX] = this.board[startY][startX];
 		this.board[startY][startX] = null;
@@ -431,6 +464,27 @@ module.exports = class Game {
 		const rank = xyObj.y + 1;
 		return file + rank;
 	}
+
+
+	// function to check if the squares are under attack by the opponent for the castling move
+	checkIfSquareIsUnderAttack(board, x, y, color) {
+		  // check if any square between the king and rook is under attack
+		  for (let i = 0; i < board.length; i++) {
+			for (let j = 0; j < board[i].length; j++) {
+			  if (board[i][j] && board[i][j].color !== color) {
+				const possibleMoves = this.getPossibleMoves(board, j, i, true);
+				for (let k = 0; k < possibleMoves.length; k++) {
+				  if (possibleMoves[k].x === x && possibleMoves[k].y === y) {
+					return true;
+				  }
+				}
+			  }
+			}
+		  }
+		  return false;
+		}
+	
+
 
 	displayHistory() {
 		console.log(this.moveHistory);
@@ -499,7 +553,7 @@ module.exports = class Game {
 			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
 			this.moveHistory.push(piece.type.charAt(0)+move+"#");
 		}*/
-		/*if(moveType === "castle") {
+		/*if(moveType === "castleShort") {
 			yEnd = yEnd;
 			xEnd = xEnd;
 			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
@@ -511,7 +565,7 @@ module.exports = class Game {
 			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
 			this.moveHistory.push("O-O-O");
 		}
-		if(moveType === "promotion") {
+		/*if(moveType === "promotion") {
 			yEnd = yEnd;
 			xEnd = xEnd;
 			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
