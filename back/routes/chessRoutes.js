@@ -8,9 +8,10 @@ module.exports = (app, game, engine) => {
     app.post('/movePiece', (req, res) => {
         const {x, y, xNext, yNext} = req.body;
         res.send(game.movePiece(x, y, xNext, yNext));
-        res.send(game.updateHistory(game.board, game.board[yNext][xNext], xNext, yNext, x, y));
-        res.send(game.displayHistory());
+        game.updateHistory(game.board, game.board[yNext][xNext], xNext, yNext, x, y);
+        //game.displayHistory();
 	    engine.update(game.board, game.turn);
+        engine.evaluateBoard(engine.board, engine.turn);
     });
 
 	app.post('/isChecked', (req, res) => {

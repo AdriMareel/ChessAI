@@ -123,7 +123,6 @@ module.exports = class Engine extends Game {
 			.then(response => response.json())
 			.then(data => {
 				console.log(data);
-				console.log("FIN EVALUATE BOARD");
 				return data;
 			})
 			.catch(error => {
