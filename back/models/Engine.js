@@ -136,11 +136,11 @@ module.exports = class Engine extends Game {
 
 		// change the array to a fen string
 		let pieceTypes = ["pawn", "knight", "bishop", "rook", "queen", "king"];
-		let fenChar = ["P", "N", "B", "R", "Q", "K", "p", "n", "b", "r", "q", "k"];
+		let fenChar = ["p", "n", "b", "r", "q", "k", "P", "N", "B", "R", "Q", "K"];
 
 		let fen = "";
 		let empty = 0;
-		for (let i = 0 ; i < boardCopy.length; i++) {
+		for (let i = boardCopy.length - 1 ; i >= 0; i--) {
 			for (let j = 0; j < boardCopy.length; j++) {
 				if (boardCopy[i][j] === null) {
 					empty++;
@@ -164,7 +164,7 @@ module.exports = class Engine extends Game {
 				fen += empty;
 				empty = 0;
 			}
-			if (i < boardCopy.length - 1) {
+			if (i > 0) {
 				fen += "/";
 			}
 		}
