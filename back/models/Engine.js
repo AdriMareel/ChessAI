@@ -1,19 +1,19 @@
 const Piece = require("./Piece");
 const Game = require("./Chess");
 const fetch = require("node-fetch");
+const {chessAnalysisApi, PROVIDERS} = require("chess-analysis-api");
 
 module.exports = class Engine extends Game {
 	constructor() {
 		super();
+		this.movesNumber = 0;
 		this.evaluateBoard(this.board, this.turn);
-		// let { score, moves } = this.minimax(this.board, 5, -Infinity, Infinity, true, []);
-		// console.log("SCORE: ", score);
-		// console.log("MOVES: ", moves); /
 	}
 
 	update(board, turn) {
 		this.board = board;
 		this.turn = turn;
+		this.movesNumber++;
 	}
 
 	minimax(board, depth, alpha, beta, maximizingPlayer, movesPlayed) {
@@ -116,18 +116,53 @@ module.exports = class Engine extends Game {
 	}
 
 	async evaluateBoard(board, color) {
-		let fen = this.getFen(board, color);
-		console.log("FEN", fen);
+		return new Promise(async (resolve, reject) => {
 
-		fetch(`https://lichess.org/api/cloud-eval?fen=${fen}`)
-			.then(response => response.json())
-			.then(data => {
-				console.log(data);
-				return data;
-			})
-			.catch(error => {
-				console.error(error);
+			let score = 0;
+			let fen = this.getFen(board, color);
+			console.log("FEN", fen);
+
+			await chessAnalysisApi.getAnalysis({
+				fen: fen,
+				type : "evaluation",
+				depth: 10,
+				multipv: 6,
+				excludes: [
+					PROVIDERS.LICHESS_BOOK,
+					PROVIDERS.LICHESS_CLOUD_EVAL,
+				]
+				})
+				.then((result) => {
+					console.log(result.moves);
+					
+					//check if there's a forced mate
+					let mate = false;
+					result.moves.forEach(move => {
+						if (move.score.type == "mate"){
+							score = move.score;
+							resolve(score);
+						}
+					});
+
+					// calculate the average score
+					result.moves.forEach(move => {
+						score += move.score.value;
+					});
+					score /= result.moves.length;
+					console.log("SCORE", score);
+					
+					// if the color is black, the score is negative
+					if (this.movesNumber % 2 == 1){
+						score *= -1;
+					}
+
+					resolve((score/100).toFixed(2));
+				})
+				.catch(error => {
+					console.error(error);
+					throw new Error(error.message);
 			});
+		});
 	}
 
 	getFen(board, color) {
@@ -168,8 +203,17 @@ module.exports = class Engine extends Game {
 				fen += "/";
 			}
 		}
-
+		// color 
 		color === "white" ? fen += " w " : fen += " b ";
+
+		// castling possible
+		let castling = "";
+		castling += this.checkCastling(boardCopy);
+
+		//en passant + halfmove + fullmove
+		let enPassant = "-";
+		fen += castling + " " + enPassant + " 0 " + Math.floor(this.movesNumber / 2) + 1;
+		
 		return fen;
 	}
 
@@ -207,5 +251,110 @@ module.exports = class Engine extends Game {
 		}
 
 		return false;
+	}
+
+	checkCastling(board) {
+		let castling = "";
+		let whiteCastleQueenSide = true;
+		let whiteCastleKingSide = true;
+		let blackCastleQueenSide = true;
+		let blackCastleKingSide = true;
+
+		if (board[0][4] !== null){
+			if (board[0][4].type != "king" || board[0][4].moved) {
+				whiteCastleKingSide = false;
+				whiteCastleQueenSide = false;
+			}
+		}
+		else {
+			whiteCastleKingSide = false;
+			whiteCastleQueenSide = false;
+		}
+		if (board[7][4] !== null){
+			if (board[7][4].type != "king" || board[7][4].moved) {
+				blackCastleKingSide = false;
+				blackCastleQueenSide = false;
+			}
+		}
+		else{
+			blackCastleKingSide = false;
+			blackCastleQueenSide = false;
+		}
+		if (board[0][0] !== null){
+			if (board[0][0].type != "rook" || board[0][0].moved) {
+				whiteCastleQueenSide = false;
+			}
+		}
+		else{
+			whiteCastleQueenSide = false;
+		}
+		if (board[0][7] !== null){
+			if (board[0][7].type != "rook" || board[0][7].moved) {
+				whiteCastleKingSide = false;
+			}
+		}
+		else{
+			whiteCastleKingSide = false;
+		}
+		if (board[7][0] !== null){
+			if (board[7][0].type != "rook" || board[7][0].moved) {
+				blackCastleQueenSide = false;
+			}
+		}
+		else{
+			blackCastleQueenSide = false;
+		}
+		if (board[7][7] !== null){
+			if (board[7][7].type != "rook" || board[7][7].moved) {
+				blackCastleKingSide = false;
+			}
+		}
+		else{
+			blackCastleKingSide = false;
+		}
+
+		
+		if (whiteCastleKingSide) {
+			if (this.checkIfSquareIsUnderAttack(board, 5, 0, "black") || this.checkIfSquareIsUnderAttack(board, 6, 0, "black")) {
+				whiteCastleKingSide = false;
+			}
+		}
+
+		if (whiteCastleQueenSide) {
+			if (this.checkIfSquareIsUnderAttack(board, 3, 0, "black") || this.checkIfSquareIsUnderAttack(board, 2, 0, "black") || this.checkIfSquareIsUnderAttack(board, 1, 0, "black")) {
+				whiteCastleQueenSide = false;
+			}
+		}
+
+		if (blackCastleKingSide) {
+			if (this.checkIfSquareIsUnderAttack(board, 5, 7, "white") || this.checkIfSquareIsUnderAttack(board, 6, 7, "white")) {
+				blackCastleKingSide = false;
+			}
+		}
+
+		if (blackCastleQueenSide) {
+			if (this.checkIfSquareIsUnderAttack(board, 3, 7, "white") || this.checkIfSquareIsUnderAttack(board, 2, 7, "white") || this.checkIfSquareIsUnderAttack(board, 1, 7, "white")) {
+				blackCastleQueenSide = false;
+			}
+		}
+
+		if (whiteCastleKingSide) {
+			castling += "K";
+		}
+		if (whiteCastleQueenSide) {
+			castling += "Q";
+		}
+		if (blackCastleKingSide) {
+			castling += "k";
+		}
+		if (blackCastleQueenSide) {
+			castling += "q";
+		}
+
+		if (castling === "") {
+			castling = "-";
+		}
+
+		return castling;
 	}
 }

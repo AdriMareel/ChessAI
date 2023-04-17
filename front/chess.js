@@ -115,7 +115,7 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 			headers: {
 			'Content-Type': 'application/json'
 			},
-		
+			body: JSON.stringify(),
 		})
 			.then(res => res.json())
 			.then(data => {
@@ -137,13 +137,14 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 		headers: {
 		'Content-Type': 'application/json'
 		},
-	
 	})
 		.then(res => res.json())
 		.then(data => {
-			console.log("Eval", data)
-			
-			
-			document.getElementById("evaluation").innerHTML = data
+			if (data.score.type == "mate"){
+				document.getElementById("evaluation").innerHTML = "M" + data.score.value;
+			}
+			else{
+				document.getElementById("evaluation").innerHTML = data.score;
+			}
 		});
 }

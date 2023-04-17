@@ -15,13 +15,9 @@ module.exports = (app, game, engine) => {
     });
 
 	app.post('/evaluation', async (req, res) => {
-		const value = await engine.evaluateBoard(engine.board, engine.turn)
-		console.log("---valeur--- : ",value)
-		res.send({value});
-	});
-
-	app.post('/engine', (req, res) => {
-		res.send(engine.evaluateBoard(engine.board, engine.turn));
+		let score = await engine.evaluateBoard(engine.board, engine.turn);
+		console.log("Score", score);
+		res.send({score : score});
 	});
 
 	app.post('/isChecked', (req, res) => {
