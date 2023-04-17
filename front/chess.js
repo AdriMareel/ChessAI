@@ -114,8 +114,15 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 		console.log("promotion!")
 		if(chessCoordinateNext.slice(1, 2) == 1 || chessCoordinateNext.slice(1, 2) == 8){
 			//we ask the user what piece he wants to promote to
-			let promotion = prompt("What piece do you want to promote to ? (queen, rook, bishop, knight)")
+			let promotion 
+			let choices = ["queen", "rook", "bishop", "knight"]
+			do{
+				promotion = prompt("What piece do you want to promote to ? (queen, rook, bishop, knight)")
+			//while promotion isn't equal to queen, rook, bishop or knight
+			}while(!choices.includes(promotion))
 			//we send the promotion to the server
+
+
 			fetch('/promotion', {
 				method: 'POST',
 				headers: {
