@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'front')));
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+    
 });
 
 //routes
