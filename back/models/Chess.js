@@ -357,12 +357,12 @@ module.exports = class Game {
 
 				if (piece.moved === false) {
 					//castling
-					if (board[pieceY][pieceX + 3] && board[pieceY][pieceX + 3].type === "rook" && board[pieceY][pieceX + 3].moved === false) {
+					if (board[pieceY][pieceX + 3] && board[pieceY][pieceX + 3].type === "rook" && board[pieceY][pieceX + 3].moved === false && this.checkIfSquareIsUnderAttack === false) {
 						if (board[pieceY][pieceX + 1] === null && board[pieceY][pieceX + 2] === null) {
 							possibleMoves.push({ x: pieceX + 2, y: pieceY });
 						}
 					}
-					if (board[pieceY][pieceX - 4] && board[pieceY][pieceX - 4].type === "rook" && board[pieceY][pieceX - 4].moved === false) {
+					if (board[pieceY][pieceX - 4] && board[pieceY][pieceX - 4].type === "rook" && board[pieceY][pieceX - 4].moved === false && this.checkIfSquareIsUnderAttack === false) {
 						if (board[pieceY][pieceX - 1] === null && board[pieceY][pieceX - 2] === null && board[pieceY][pieceX - 3] === null) {
 							possibleMoves.push({ x: pieceX - 2, y: pieceY });
 						}
