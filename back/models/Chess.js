@@ -40,11 +40,11 @@ module.exports = class Game {
 		let pieceY;
 
 		if (!checking) {
- 			if (piece === null || piece.color != this.turn) {
-			 	return possibleMoves;
+			if (piece === null || piece.color != this.turn) {
+				return possibleMoves;
 			}
 		}
-		
+
 
 		for (let x = 0; x < board.length; x++) {
 			for (let y = 0; y < board[x].length; y++) {
@@ -62,7 +62,7 @@ module.exports = class Game {
 				const oppositeColor = piece.color == "white" ? "black" : "white";
 
 				if (!checking) {
-					
+
 					//avancée du pion
 					if (board[pieceY + pawnDir][pieceX] === null) {
 						possibleMoves.push({ x: pieceX, y: pieceY + pawnDir });
@@ -94,7 +94,7 @@ module.exports = class Game {
 					}
 				}
 
-				if (checking){
+				if (checking) {
 					if (pieceX != 0) {
 						possibleMoves.push({ x: pieceX - 1, y: pieceY + pawnDir });
 					}
@@ -405,20 +405,26 @@ module.exports = class Game {
 		}
 		// move type = move if the end position is empty
 		if (!this.board[endY][endX]) {
-            this.moveType = "move";
-        }
-        // move type = capture if the end position contains an opponent's piece
-        if(this.board[endY][endX] && this.board[endY][endX].color !== this.board[startY][startX].color) {
-            this.moveType = "capture";
-        }
-        //move type = check if the piece checks the opponent's king
-        if (this.checkIfChecked(this.board, this.board[startY][startX].color) === true) {
-            this.moveType = "check";
-        }
+			this.moveType = "move";
+		}
+		// move type = capture if the end position contains an opponent's piece
+		if (this.board[endY][endX] && this.board[endY][endX].color !== this.board[startY][startX].color) {
+			this.moveType = "capture";
+		}
+		//move type = check if the piece checks the opponent's king
+		if (this.checkIfChecked(this.board, this.board[startY][startX].color) === true) {
+			this.moveType = "check";
+		}
+		
+		// move type = checkmate 
+		if (this.checkIfChecked(this.board, this.board[startY][startX].color) === true && this.getAllPossibleMoves(this.board, this.board[startY][startX].color).length === 0) {
+			this.moveType = "checkmate";
+		}
+
 
 		// Move type = castling long or short 
 		// Check if it's a king and if the position is the right one
-		if (this.board[startY][startX].type === "king" && this.board[startY][startX].moved === false && this.checkIfSquareIsUnderAttack(this.board) === false ) {
+		if (this.board[startY][startX].type === "king" && this.board[startY][startX].moved === false && this.checkIfSquareIsUnderAttack(this.board) === false) {
 			if (endX === 2) {
 				this.moveType = "castleLong";
 			}
@@ -428,7 +434,7 @@ module.exports = class Game {
 		}
 
 		//Move the king and the rook in the same turn if it's a castling
-		if (this.moveType === "castleLong"){
+		if (this.moveType === "castleLong") {
 			this.board[startY][startX].moved = true;
 			this.board[startY][startX - 4].moved = true;
 			this.board[startY][startX - 2] = this.board[startY][startX];
@@ -449,6 +455,9 @@ module.exports = class Game {
 			return true;
 		}
 
+
+
+
 		// Move the piece to the end position
 		this.board[endY][endX] = this.board[startY][startX];
 		this.board[startY][startX] = null;
@@ -468,22 +477,22 @@ module.exports = class Game {
 
 	// function to check if the squares are under attack by the opponent for the castling move
 	checkIfSquareIsUnderAttack(board, x, y, color) {
-		  // check if any square between the king and rook is under attack
-		  for (let i = 0; i < board.length; i++) {
+		// check if any square between the king and rook is under attack
+		for (let i = 0; i < board.length; i++) {
 			for (let j = 0; j < board[i].length; j++) {
-			  if (board[i][j] && board[i][j].color !== color) {
-				const possibleMoves = this.getPossibleMoves(board, j, i, true);
-				for (let k = 0; k < possibleMoves.length; k++) {
-				  if (possibleMoves[k].x === x && possibleMoves[k].y === y) {
-					return true;
-				  }
+				if (board[i][j] && board[i][j].color !== color) {
+					const possibleMoves = this.getPossibleMoves(board, j, i, true);
+					for (let k = 0; k < possibleMoves.length; k++) {
+						if (possibleMoves[k].x === x && possibleMoves[k].y === y) {
+							return true;
+						}
+					}
 				}
-			  }
 			}
-		  }
-		  return false;
 		}
-	
+		return false;
+	}
+
 
 
 	displayHistory() {
@@ -491,7 +500,7 @@ module.exports = class Game {
 	}
 
 	// update the moves history every time a piece is moved
-	updateHistory(board,piece,xEnd,yEnd,startX,startY) {
+	updateHistory(board, piece, xEnd, yEnd, startX, startY) {
 		let move;
 		let pieceX;
 		let pieceY;
@@ -509,60 +518,58 @@ module.exports = class Game {
 			}
 		}
 
-		if(this.moveType === "move" && piece.type === "pawn") {
+		if (this.moveType === "move" && piece.type === "pawn") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			move = this.xyToChessCoordinate({ x: xEnd, y: yEnd });
 			// push the move the piece made
 			this.moveHistory.push(move);
 		}
-		else if(this.moveType === "move") {
+		else if (this.moveType === "move") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			move = this.xyToChessCoordinate({ x: xEnd, y: yEnd });
 			// push the move the piece made
-			this.moveHistory.push(piece.type.charAt(0)+move);
+			this.moveHistory.push(piece.type.charAt(0) + move);
 		}
-		if(this.moveType === "capture" && piece.type === "pawn") {
+		if (this.moveType === "capture" && piece.type === "pawn") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
-			this.moveHistory.push(this.xyToChessCoordinate({x:startX,y:startY}).charAt(0) +"x"+move);
+			move = this.xyToChessCoordinate({ x: xEnd, y: yEnd });
+			this.moveHistory.push(this.xyToChessCoordinate({ x: startX, y: startY }).charAt(0) + "x" + move);
 		}
-		else if(this.moveType === "capture") {
+		else if (this.moveType === "capture") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
-			this.moveHistory.push(piece.type.charAt(0) +"x"+move);
+			move = this.xyToChessCoordinate({ x: xEnd, y: yEnd });
+			this.moveHistory.push(piece.type.charAt(0) + "x" + move);
 		}
-		if(this.moveType === "check" && piece.type === "pawn") {
+		if (this.moveType === "check" && piece.type === "pawn") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
-			this.moveHistory.push(move+"+");
+			move = this.xyToChessCoordinate({ x: xEnd, y: yEnd });
+			this.moveHistory.push(move + "+");
 		}
-		else if(this.moveType === "check") {
+		else if (this.moveType === "check") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
-			this.moveHistory.push(piece.type.charAt(0)+move+"+");
+			move = this.xyToChessCoordinate({ x: xEnd, y: yEnd });
+			this.moveHistory.push(piece.type.charAt(0) + move + "+");
 		}
-		/*if(moveType === "checkmate") {
+		if(this.moveType === "checkmate") {
 			yEnd = yEnd;
 			xEnd = xEnd;
 			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
 			this.moveHistory.push(piece.type.charAt(0)+move+"#");
-		}*/
-		/*if(moveType === "castleShort") {
+		}
+		if (this.moveType === "castleShort") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
 			this.moveHistory.push("O-O");
 		}
-		if(moveType === "castleLong") {
+		if (this.moveType === "castleLong") {
 			yEnd = yEnd;
 			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
 			this.moveHistory.push("O-O-O");
 		}
 		/*if(moveType === "promotion") {
@@ -585,6 +592,47 @@ module.exports = class Game {
 			this.turn = "white";
 		}
 	}
+
+	checkMate(board, color) {
+		//check if the king is in check
+		if (this.checkIfChecked(board, color)) {
+			//check if the king can move
+			if (this.getAllPossibleMoves(board, color).length === 0) {
+				console.log("t'as perdu pd, les " + color + " sont en echec et mat")
+				return true;
+			}
+		}
+	}
+
+	staleMate(board, color) {
+		//check if the king is in check
+		if (!this.checkIfChecked(board, color)) {
+			//check if the king can move
+			if (this.getAllPossibleMoves(board, color).length === 0) {
+				console.log("égalité les pds")
+				return true;
+			}
+		}
+	}
+	getAllPossibleMoves(board, color) {
+		let possibleMoves = [];
+
+		for (let y = 0; y < board.length; y++) {
+			for (let x = 0; x < board[y].length; x++) {
+				const piece = board[y][x];
+				if (piece && piece.color === color) {
+					possibleMoves.push({ piece: piece, move: this.getPossibleMoves(board, piece) });
+				}
+			}
+		}
+		possibleMoves.flat();
+		possibleMoves = possibleMoves.filter((action) => action.move.length > 0);
+		possibleMoves = possibleMoves.map(({ piece, move }) => ({ piece, move: move[0] }));
+
+		return possibleMoves;
+	}
+
+
 
 	checkIfChecked(board, color) {
 		//find king
