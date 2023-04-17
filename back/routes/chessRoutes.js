@@ -14,8 +14,10 @@ module.exports = (app, game, engine) => {
 
     });
 
-	app.post('/evaluation', (req, res) => {
-		res.send(engine.evaluateBoard(engine.board, engine.turn));
+	app.post('/evaluation', async (req, res) => {
+		const value = await engine.evaluateBoard(engine.board, engine.turn)
+		console.log("---valeur--- : ",value)
+		res.send({value});
 	});
 
 	app.post('/engine', (req, res) => {

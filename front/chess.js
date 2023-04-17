@@ -130,4 +130,20 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 				if(whiteCheck){isCheck("white")}
 				if(blackCheck){isCheck("black")}
 			});
+
+			
+	fetch('/evaluation', {
+		method: 'POST',
+		headers: {
+		'Content-Type': 'application/json'
+		},
+	
+	})
+		.then(res => res.json())
+		.then(data => {
+			console.log("Eval", data)
+			
+			
+			document.getElementById("evaluation").innerHTML = data
+		});
 }
