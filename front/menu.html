@@ -8,19 +8,15 @@
     <title>Menu du jeu</title>
   </head>
   <body>
-    <h1>Menu du jeu</h1>
     <div id="menu">
       <!-- Button start qui redirige vers le jeu --> 
-      <button onclick="window.location.href = 'chessBoard.html';">Start</button>
+      <button onclick="window.location.href = '/game';">Echiquier d'analyse</button>
 
       <!-- Button settings qui redirige vers la page des paramètres -->
-      <button>Settings</button>
+      <button onclick="window.location.href = '/ai';">Jouer contre l'ordinateur</button>
       
       <!-- Button rules qui redirige vers la page des règles -->
-      <button onclick="window.location.href = 'rules.html';">Rules</button>
-
-      <!-- Button credits qui redirige vers la page des crédits -->
-      <button>Credits</button>
+      <button onclick="window.location.href = '/rules';">Règles des échecs</button>
     </div>
   </body> 
 </html>

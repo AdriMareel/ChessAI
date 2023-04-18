@@ -2,13 +2,13 @@ import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMove
 
 export let clickedPiece = null;
 
-function chessCoordinateToXY(chessCoord) {
+export function chessCoordinateToXY(chessCoord) {
 	const file = chessCoord[0].toLowerCase().charCodeAt(0) - 97; 
 	const rank = parseInt(chessCoord[1]) - 1; 
 	return { x: file, y: rank };
 }
 
-function xyToChessCoordinate(xyObj) {
+export function xyToChessCoordinate(xyObj) {
 	const file = String.fromCharCode(97 + xyObj.x); 
 	const rank = xyObj.y + 1; 
 	return file + rank;
