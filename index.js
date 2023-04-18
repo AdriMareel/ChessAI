@@ -16,9 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'front')));
 
-app.listen(port, () => {
-    
-});
+app.listen(port);
 
 //routes
 app.get('/', (req, res) => {
@@ -30,6 +28,13 @@ app.get('/game', (req, res, next) => {
     next();
 }, resetGame, (req, res) => {
     res.sendFile(__dirname + '/front/chessBoard.html');
+});
+
+app.get('/AI', (req, res, next) => {
+	req.game = game;
+	next();
+	}, resetGame, (req, res) => {
+	res.sendFile(__dirname + '/front/boardVersusAI.html');
 });
 
 setupChessRoutes(app, game, engine);

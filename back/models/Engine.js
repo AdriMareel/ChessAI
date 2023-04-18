@@ -7,7 +7,6 @@ module.exports = class Engine extends Game {
 	constructor() {
 		super();
 		this.movesNumber = 0;
-		this.evaluateBoard(this.board, this.turn);
 	}
 
 	update(board, turn) {
@@ -156,7 +155,7 @@ module.exports = class Engine extends Game {
 						score *= -1;
 					}
 
-					resolve((score/100).toFixed(2));
+					resolve({score : (score/100).toFixed(2), moves : result.moves[0]});
 				})
 				.catch(error => {
 					console.error(error);

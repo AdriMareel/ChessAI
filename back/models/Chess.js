@@ -479,6 +479,12 @@ module.exports = class Game {
 		return file + rank;
 	}
 
+	chessCoordinateToXY(chessCoord) {
+		const file = chessCoord[0].toLowerCase().charCodeAt(0) - 97; 
+		const rank = parseInt(chessCoord[1]) - 1; 
+		return { x: file, y: rank };
+	}
+
 
 	// function to check if the squares are under attack by the opponent for the castling move
 	checkIfSquareIsUnderAttack(board, x, y, color) {

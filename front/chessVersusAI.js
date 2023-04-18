@@ -1,4 +1,4 @@
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected} from './display.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected } from './displayVersusAI.js';
 
 export let clickedPiece = null;
 
@@ -17,11 +17,11 @@ function xyToChessCoordinate(xyObj) {
 export function getPossibleMoves(chessCoordinate){
 	clickedPiece = chessCoordinate;
 	console.warn('GET POSSIBLE MOVES');
-	removeSelected()
+	removeSelected();
 	displaySelected(chessCoordinate)
 	const {x , y} = chessCoordinateToXY(chessCoordinate);
 	
-	fetch('/getPossibleMoves', {
+	fetch('/getPossibleMoves', {	
 		method: 'POST',
 		headers: {
 		'Content-Type': 'application/json'
@@ -43,63 +43,57 @@ export function getPossibleMoves(chessCoordinate){
 		});
 }
 
-export function move(chessCoordinatePrevious, chessCoordinateNext){
+export function move(chessCoordinatePrevious, chessCoordinateNext) {
+	removeSelected();
+	const { x, y } = chessCoordinateToXY(chessCoordinatePrevious);
+	const { x: xNext, y: yNext } = chessCoordinateToXY(chessCoordinateNext);
 
-	removeSelected()
-	const {x , y} = chessCoordinateToXY(chessCoordinatePrevious);
-	const {x : xNext , y : yNext} = chessCoordinateToXY(chessCoordinateNext);
-	
 	console.warn('MOVE');
 	console.log(chessCoordinatePrevious, chessCoordinateNext);
 
-	//si la piece bougée est un roi et qu'il s'agit d'un roque
-	console.log("piece bougée", chessCoordinatePrevious)
-	//first child alt contain "king"
-	if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("king")){
+	if (document.getElementById(chessCoordinatePrevious).firstChild.alt.match("king")) {
 		//take the 6 first char of the first child alt
 		//if it's "white" it's a white king
 		//if it's "black" it's a black king
 		//let color = document.getElementById(chessCoordinatePrevious).firstChild.alt.slice(0, 5) 
-		
+
 		console.log("roi bougé", chessCoordinatePrevious, chessCoordinateNext)
 
-		let chessCoordinatePreviousR 
+		let chessCoordinatePreviousR
 		let chessCoordinateNextR
 		chessCoordinateNextR = ""
-		
+
 		//si le roque est petit
-		let roque=false
-		if(xNext - x == 2){
+		let roque = false
+		if (xNext - x == 2) {
 			chessCoordinatePreviousR = "h" + chessCoordinatePrevious.slice(1, 2)
 			chessCoordinateNextR = "f" + chessCoordinateNext.slice(1, 2)
 			//on bouge la tour		
 			roque = true
 		}
 		//si le roque est grand
-		else if(x - xNext == 2){
+		else if (x - xNext == 2) {
 			//on bouge la tour		
 			roque = true
 			chessCoordinatePreviousR = "a" + chessCoordinatePrevious.slice(1, 2)
 			chessCoordinateNextR = "d" + chessCoordinateNext.slice(1, 2)
 		}
-		if(roque)
-		{
-		displayMove(chessCoordinatePreviousR, chessCoordinateNextR);
+		if (roque) {
+			displayMove(chessCoordinatePreviousR, chessCoordinateNextR);
 
 		}
 	}
 
-
 	fetch('/movePiece', {
 		method: 'POST',
 		headers: {
-		'Content-Type': 'application/json'
+			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			x : x,
-			y : y,
-			xNext : xNext,
-			yNext : yNext,
+			x: x,
+			y: y,
+			xNext: xNext,
+			yNext: yNext,
 		})
 	})
 		.then(res => res.json())
@@ -108,12 +102,46 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 			clickedPiece = null;
 			displayMove(chessCoordinatePrevious, chessCoordinateNext);
 		});
-	
-		
+
 	fetch('/isChecked', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(),
+	})
+		.then(res => res.json())
+		.then(data => {
+			//data is send with black and white parameter containing true or false
+			//if true, it's check
+			//if false, it's not check
+			console.log("isCheck", data)
+			//read "black" and "white" parameter from object
+			let blackCheck = data.black
+			let whiteCheck = data.white
+			clearCheck()
+			if (whiteCheck) { isCheck("white") }
+			if (blackCheck) { isCheck("black") }
+		});
+
+
+	fetch('/playAI', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(),
+	})
+		.then(res => res.json())
+		.then(data => {
+			console.log("AI played", data);
+			displayMove(data.start, data.end);
+		});
+
+		fetch('/isChecked', {
 			method: 'POST',
 			headers: {
-			'Content-Type': 'application/json'
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(),
 		})
@@ -127,24 +155,8 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 				let blackCheck = data.black
 				let whiteCheck = data.white
 				clearCheck()
-				if(whiteCheck){isCheck("white")}
-				if(blackCheck){isCheck("black")}
+				if (whiteCheck) { isCheck("white") }
+				if (blackCheck) { isCheck("black") }
 			});
 
-			
-	fetch('/evaluation', {
-		method: 'POST',
-		headers: {
-		'Content-Type': 'application/json'
-		},
-	})
-		.then(res => res.json())
-		.then(data => {
-			if (data.score.type == "mate"){
-				document.getElementById("evaluation").innerHTML = "M" + data.score.value;
-			}
-			else{
-				document.getElementById("evaluation").innerHTML = data.score;
-			}
-		});
 }

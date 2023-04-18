@@ -1,4 +1,4 @@
-import { getPossibleMoves, clickedPiece, move } from "./chess.js";
+import { getPossibleMoves, clickedPiece, move } from "./chessVersusAI.js";
 
 const chessCoordInit = [	
 	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",  // Black pieces
@@ -14,46 +14,54 @@ const chessPieceInit = [
 	"white-rook", "white-knight", "white-bishop", "white-queen", "white-king", "white-bishop", "white-knight", "white-rook" // White pieces
 ];
 
-let board = document.getElementById("board");
-for (let i = 0; i < 9; i++) {
-	let row = document.createElement("div");
-	row.className = "row";
-	
-		for (let j = 0; j < 9; j++) {
-			let cell = document.createElement("div");
-			//caracteristique spéciale pour la première ligne 
-			if(i==0){
-				cell.className = "colonne";
-				cell.innerText = String.fromCharCode(96 + j);
-				//en particulier pour la première case
-				if(j==0){
+function displayInitialBoard(){
+	let board = document.getElementById("board");
+	for (let i = 0; i < 9; i++) {
+		let row = document.createElement("div");
+		row.className = "row";
+		
+			for (let j = 0; j < 9; j++) {
+				let cell = document.createElement("div");
+				//caracteristique spéciale pour la première ligne 
+				if(i==0){
+					cell.className = "colonne";
+					cell.innerText = String.fromCharCode(96 + j);
+					//en particulier pour la première case
+					if(j==0){
+						cell.className = "ligne";
+						cell.innerText = "";
+					}
+				}
+				//caracteristique spéciale pour la première colonne
+				else if(j==0){
 					cell.className = "ligne";
-					cell.innerText = "";
+					cell.innerText = 9 - i;
 				}
-			}
-			//caracteristique spéciale pour la première colonne
-			else if(j==0){
-				cell.className = "ligne";
-				cell.innerText = 9 - i;
-			}
-
-			//Pour toute les cases "normales"
-			else{
-				cell.className = "square";
-				cell.id = String.fromCharCode(96 + j) + (9 - i);
-				
-				// on met la classe light ou dark en fonction de la position de la case
-				if((j+i)%2== 0){
-					cell.classList.add("light");
-				}
+	
+				//Pour toute les cases "normales"
 				else{
-					cell.classList.add("dark");
-				} 
+					cell.className = "square";
+					cell.id = String.fromCharCode(96 + j) + (9 - i);
+					
+					// on met la classe light ou dark en fonction de la position de la case
+					if((j+i)%2== 0){
+						cell.classList.add("light");
+					}
+					else{
+						cell.classList.add("dark");
+					} 
+				}
+				row.appendChild(cell);
 			}
-			row.appendChild(cell);
-		}
-	board.appendChild(row);
+		board.appendChild(row);
+	}
+	
+	//chess pieces initialisation
+	for (let i = 0; i < chessCoordInit.length; i++) {
+		document.getElementById(chessCoordInit[i]).innerHTML = `<img src="public/pieces/${chessPieceInit[i]}.png" alt="${chessPieceInit[i]}" class="piece" >`;
+	}
 }
+displayInitialBoard();
 
 export function untoggleMoveMode(){
 	for (let item of document.getElementsByClassName("square")) {
@@ -65,11 +73,6 @@ export function untoggleMoveMode(){
 	}
 }
 untoggleMoveMode();
-
-//chess pieces initialisation
-for (let i = 0; i < chessCoordInit.length; i++) {
-	document.getElementById(chessCoordInit[i]).innerHTML = `<img src="public/pieces/${chessPieceInit[i]}.png" alt="${chessPieceInit[i]}" class="piece" >`;
-}
 
 export function displaySelected(id){
     document.getElementById(id).classList.add("selected");
