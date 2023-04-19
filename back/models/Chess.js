@@ -430,15 +430,6 @@ module.exports = class Game {
 		if (this.board[endY][endX] && this.board[endY][endX].color !== this.board[startY][startX].color) {
 			this.moveType = "capture";
 		}
-		//move type = check if the piece checks the opponent's king
-		if (this.checkIfChecked(this.board, this.board[startY][startX].color) === true) {
-			this.moveType = "check";
-		}
-		
-		// move type = checkmate 
-		if (this.checkIfChecked(this.board, this.board[startY][startX].color) === true && this.getAllPossibleMoves(this.board, this.board[startY][startX].color).length === 0) {
-			this.moveType = "checkmate";
-		}
 
 
 		// Move type = castling long or short 
@@ -477,8 +468,17 @@ module.exports = class Game {
 		// Move the piece to the end position
 		this.board[endY][endX] = this.board[startY][startX];
 		this.board[startY][startX] = null;
-
 		this.board[endY][endX].moved = true;
+
+		//move type = check if the piece checks the opponent's king
+		if (this.checkIfChecked(this.board, this.board[endY][endX].color === "white" ? "black" : "white")) {
+			this.moveType = "check";
+		}
+		
+		// move type = checkmate 
+		if (this.checkMate(this.board, this.board[endY][endX].color === "white" ? "black" : "white")) {
+			this.moveType = "checkmate";
+		}
 
 		this.changeTurn();
 		return true;
