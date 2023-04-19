@@ -26,11 +26,7 @@ module.exports = (app, game, engine) => {
 	});
 
 	app.post('/playAI', async (req, res) => {
-		let response = await engine.evaluateBoard(engine.board, engine.turn);
-
-		let move = response.moves.uci[0];
-		let start = move.substring(0,2);
-		let end = move.substring(2);
+		let {start : start , end : end} = await engine.playAI();
 
 		res.send({start : start, end : end});
 

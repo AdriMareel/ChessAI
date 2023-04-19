@@ -216,6 +216,16 @@ module.exports = class Engine extends Game {
 		return fen;
 	}
 
+	async playAI(){
+		let response = await this.evaluateBoard(this.board, this.turn);
+
+		let move = response.moves.uci[0];
+		let start = move.substring(0,2);
+		let end = move.substring(2);
+
+		return {start : start, end : end};
+	}
+
 	getAllPossibleMoves(board, color){
 		let possibleMoves = [];
 
