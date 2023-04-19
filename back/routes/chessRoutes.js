@@ -65,4 +65,11 @@ module.exports = (app, game, engine) => {
 		game.updateHistory(game.board, game.board[yEnd][xEnd], xEnd, yEnd, xStart, yStart);
         engine.update(game.board, game.turn);
 	});
+
+    app.post('/getFen', (req, res) => {
+        const {x, y} = req.body;
+
+        res.send({fen: engine.getFen(engine.board,engine.turn)});
+    });
+
 }

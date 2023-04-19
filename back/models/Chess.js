@@ -387,12 +387,11 @@ module.exports = class Game {
 			const tempBoard = board.map(row => row.map(piece => piece));
 			tempBoard[move.y][move.x] = tempBoard[pieceY][pieceX];
 			tempBoard[pieceY][pieceX] = null;
-			let moved = tempBoard[move.y][move.x].moved;
 			tempBoard[move.y][move.x].moved = true;
 			if (!this.checkIfChecked(tempBoard, piece.color)) {
 				legalMoves.push(move);
 			}
-			tempBoard[move.y][move.x].moved = moved;
+			tempBoard[move.y][move.x].moved = false;
 		});
 
 		return legalMoves;
@@ -474,9 +473,6 @@ module.exports = class Game {
 			this.changeTurn();
 			return true;
 		}
-
-
-
 
 		// Move the piece to the end position
 		this.board[endY][endX] = this.board[startY][startX];

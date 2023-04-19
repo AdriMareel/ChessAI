@@ -209,7 +209,7 @@ module.exports = class Engine extends Game {
 
 		//en passant + halfmove + fullmove
 		let enPassant = "-";
-		fen += castling + " " + enPassant + " 0 " + Math.floor(this.movesNumber / 2) + 1;
+		fen += castling + " " + enPassant + " 0 " + Math.floor(this.movesNumber / 2 + 1)   ;
 		
 		return fen;
 	}

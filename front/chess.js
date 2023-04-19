@@ -188,4 +188,22 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 				document.getElementById("evaluation").innerHTML = data.score;
 			}
 		});
-	*/}
+	*/
+
+	fetch('/getFen', {
+		method: 'POST',
+		headers: {
+		'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			x : xNext,
+			y : yNext,
+		})
+	})
+		.then(res => res.json())
+		.then(data => {
+		
+			document.getElementById("fenGame").innerHTML = data.fen;
+		});
+
+}
