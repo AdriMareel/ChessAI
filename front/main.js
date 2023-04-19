@@ -6,7 +6,7 @@ async function requestGPT(question, temperature = 150, max_tokens = 600,response
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer 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",
+              "Bearer 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",
           },
           body: JSON.stringify({
             model: "gpt-3.5-turbo",
