@@ -121,21 +121,24 @@ export function clearCheck(){
 }
 
 export function displayHistory(coup, color){
-    
     let Origine= document.getElementById("history").innerHTML;
     
     let rajout = "";
     if(color=="white"){
-        rajout = `<div class="coups"><div class="coupW">${coup}</div>`
+		turn++;
+        rajout = `<div class="coups"><div class="turn">${turn}</div><div class="coupW">${coup}</div><div class="coupB"></div></div>`
     }
     else{
         //on enleve le </div> de la ligne précédente
-        Origine = Origine.substring(0, Origine.length - 6);
-        rajout = `<div class="coupB">${coup}</div></div>`
+
+        Origine = Origine.substring(0, Origine.length - 12);
+		console.log
+        rajout = `${coup}</div></div>`
     }
 
     document.getElementById("history").innerHTML = Origine + rajout;
 }
+
 
 export function promoting(id, futurePiece){
     //get the alt of the id

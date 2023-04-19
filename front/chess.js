@@ -173,7 +173,7 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 			});
 
 			
-	fetch('/evaluation', {
+/*	fetch('/evaluation', {
 		method: 'POST',
 		headers: {
 		'Content-Type': 'application/json'
@@ -188,4 +188,4 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 				document.getElementById("evaluation").innerHTML = data.score;
 			}
 		});
-}
+	*/}
