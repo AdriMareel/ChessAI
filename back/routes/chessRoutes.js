@@ -14,7 +14,6 @@ module.exports = (app, game, engine) => {
         res.send({history});
         game.displayHistory();
         engine.update(game.board, game.turn);
-        engine.evaluateBoard(engine.board, engine.turn);
     });
 
     app.post('/promotion', (req, res) => {
@@ -41,10 +40,16 @@ module.exports = (app, game, engine) => {
 	app.post('/playAI', async (req, res) => {
 		let {start : start , end : end} = await engine.playAI();
 
-		res.send({start : start, end : end});
-
 		let { x : xStart, y : yStart} = game.chessCoordinateToXY(start);
 		let { x : xEnd, y : yEnd} = game.chessCoordinateToXY(end);
+
+		let object = engine.checkIfCastling(xStart, yStart, xEnd, yEnd);
+		if (object){
+			res.send({start : start, end : end, castling : object});
+		}
+		else{
+			res.send({start : start, end : end});
+		}
 		game.movePiece(xStart, yStart, xEnd, yEnd);
 		game.updateHistory(game.board, game.board[yEnd][xEnd], xEnd, yEnd, xStart, yStart);
         engine.update(game.board, game.turn);

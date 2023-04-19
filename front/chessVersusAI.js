@@ -3,38 +3,38 @@ import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMove
 export let clickedPiece = null;
 
 function chessCoordinateToXY(chessCoord) {
-	const file = chessCoord[0].toLowerCase().charCodeAt(0) - 97; 
-	const rank = parseInt(chessCoord[1]) - 1; 
+	const file = chessCoord[0].toLowerCase().charCodeAt(0) - 97;
+	const rank = parseInt(chessCoord[1]) - 1;
 	return { x: file, y: rank };
 }
 
 function xyToChessCoordinate(xyObj) {
-	const file = String.fromCharCode(97 + xyObj.x); 
-	const rank = xyObj.y + 1; 
+	const file = String.fromCharCode(97 + xyObj.x);
+	const rank = xyObj.y + 1;
 	return file + rank;
 }
 
-export function getPossibleMoves(chessCoordinate){
+export function getPossibleMoves(chessCoordinate) {
 	clickedPiece = chessCoordinate;
 	console.warn('GET POSSIBLE MOVES');
 	removeSelected();
 	displaySelected(chessCoordinate)
-	const {x , y} = chessCoordinateToXY(chessCoordinate);
-	
-	fetch('/getPossibleMoves', {	
+	const { x, y } = chessCoordinateToXY(chessCoordinate);
+
+	fetch('/getPossibleMoves', {
 		method: 'POST',
 		headers: {
-		'Content-Type': 'application/json'
+			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 
-			x : x,
-			y : y,
+		body: JSON.stringify({
+			x: x,
+			y: y,
 		})
 	})
 		.then(res => res.json())
 		.then(data => {
 			removePossibleMoves();
-			
+
 			data.forEach(element => {
 				console.log(element);
 				displayPossibleMoves(xyToChessCoordinate(element));
@@ -43,7 +43,7 @@ export function getPossibleMoves(chessCoordinate){
 		});
 }
 
-export function move(chessCoordinatePrevious, chessCoordinateNext) {
+export async function move(chessCoordinatePrevious, chessCoordinateNext) {
 	removeSelected();
 	const { x, y } = chessCoordinateToXY(chessCoordinatePrevious);
 	const { x: xNext, y: yNext } = chessCoordinateToXY(chessCoordinateNext);
@@ -84,7 +84,7 @@ export function move(chessCoordinatePrevious, chessCoordinateNext) {
 		}
 	}
 
-	fetch('/movePiece', {
+	await fetch('/movePiece', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -103,7 +103,8 @@ export function move(chessCoordinatePrevious, chessCoordinateNext) {
 			displayMove(chessCoordinatePrevious, chessCoordinateNext);
 		});
 
-	fetch('/isChecked', {
+	
+	await fetch('/isChecked', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -125,7 +126,7 @@ export function move(chessCoordinatePrevious, chessCoordinateNext) {
 		});
 
 
-	fetch('/playAI', {
+	await fetch('/playAI', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -136,43 +137,30 @@ export function move(chessCoordinatePrevious, chessCoordinateNext) {
 		.then(data => {
 			console.log("AI played", data);
 			displayMove(data.start, data.end);
+			if (data.castling) {
+				displayMove(data.castling.startR, data.castling.endR);
+			}
 		});
 
-		fetch('/isChecked', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(),
-		})
-			.then(res => res.json())
-			.then(data => {
-				//data is send with black and white parameter containing true or false
-				//if true, it's check
-				//if false, it's not check
-				console.log("isCheck", data)
-				//read "black" and "white" parameter from object
-				let blackCheck = data.black
-				let whiteCheck = data.white
-				clearCheck()
-				if (whiteCheck) { isCheck("white") }
-				if (blackCheck) { isCheck("black") }
-			});
+	await fetch('/isChecked', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(),
+	})
+		.then(res => res.json())
+		.then(data => {
+			//data is send with black and white parameter containing true or false
+			//if true, it's check
+			//if false, it's not check
+			console.log("isCheck", data)
+			//read "black" and "white" parameter from object
+			let blackCheck = data.black
+			let whiteCheck = data.white
+			clearCheck()
+			if (whiteCheck) { isCheck("white") }
+			if (blackCheck) { isCheck("black") }
+		});
 
-
-			fetch('/evaluation', {
-				method: 'POST',
-				headers: {
-				'Content-Type': 'application/json'
-				},
-			})
-				.then(res => res.json())
-				.then(data => {
-					if (data.score.type == "mate"){
-						document.getElementById("evaluation").innerHTML = "M" + data.score.value;
-					}
-					else{
-						document.getElementById("evaluation").innerHTML = data.score;
-					}
-				});
 }

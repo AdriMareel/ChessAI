@@ -132,14 +132,13 @@ module.exports = class Engine extends Game {
 				]
 				})
 				.then((result) => {
-					console.log(result.moves);
-					
 					//check if there's a forced mate
 					let mate = false;
 					result.moves.forEach(move => {
 						if (move.score.type == "mate"){
 							score = move.score;
-							resolve(score);
+							console.log({score : score, moves : move});
+							resolve({score : score, moves : move});
 						}
 					});
 
@@ -148,13 +147,12 @@ module.exports = class Engine extends Game {
 						score += move.score.value;
 					});
 					score /= result.moves.length;
-					console.log("SCORE", score);
+					;
 					
 					// if the color is black, the score is negative
 					if (this.movesNumber % 2 == 1){
 						score *= -1;
 					}
-
 					resolve({score : (score/100).toFixed(2), moves : result.moves[0]});
 				})
 				.catch(error => {
@@ -218,12 +216,24 @@ module.exports = class Engine extends Game {
 
 	async playAI(){
 		let response = await this.evaluateBoard(this.board, this.turn);
-
+		console.log("RESPONSE", response);
 		let move = response.moves.uci[0];
 		let start = move.substring(0,2);
 		let end = move.substring(2);
 
 		return {start : start, end : end};
+	}
+
+	checkIfCastling(xStart,yStart,xEnd,yEnd){
+		if (this.board[yStart][xStart].type == "king" && Math.abs(xEnd - xStart) == 2){
+			//return the coordinate of the rook
+			if (xEnd > xStart){
+				return {startR : this.xyToChessCoordinate({x : 7, y : yStart}), endR : this.xyToChessCoordinate({x : 5, y : yStart})};
+			} else {
+				return {startR : this.xyToChessCoordinate({x : 0, y : yStart}), endR : this.xyToChessCoordinate({x : 3, y : yStart})};
+			}
+		}
+		return false;
 	}
 
 	getAllPossibleMoves(board, color){
