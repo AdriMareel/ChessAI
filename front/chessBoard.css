@@ -101,6 +101,10 @@ body{
 	font-weight: unset;
 }
 
+.coupB:hover, .coupW:hover{
+	background-color: #25a6ce;
+	cursor: pointer;
+}
 .coupB, .coupW{
     width: 50%;
     height: fit-content;
