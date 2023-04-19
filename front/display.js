@@ -121,7 +121,6 @@ export function clearCheck(){
 }
 
 export function displayHistory(coup, color){
-    console.log(document.getElementById("history").innerHTML);
     
     let Origine= document.getElementById("history").innerHTML;
     

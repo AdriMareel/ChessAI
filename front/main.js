@@ -6,7 +6,7 @@ async function requestGPT(question, temperature = 150, max_tokens = 600,response
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer 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",
+              "Bearer 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",
           },
           body: JSON.stringify({
             model: "gpt-3.5-turbo",
@@ -48,6 +48,7 @@ function appendDiv() {
     var temp = 1;
     var tokens = 800;
     
+    
     form.onsubmit = async function(e) {
         e.preventDefault();
         answer.innerHTML = "Chargement en cours...";
@@ -57,11 +58,12 @@ function appendDiv() {
           parseInt(tokens)
         );
         //transforme \n en <br>, if two \n, then only one <br>
-        
+    
         response = response.replace(/\n/g, "<br>");
         response = response.replace(/<br><br>/g, "<br>");
 
         answer.innerHTML = response;
+        
         
     }
     // add a scrollbar to the div
