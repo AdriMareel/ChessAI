@@ -1,19 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="chessBoard.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 </head>
 <body>
-	<div id="evaluation"></div>
-	<div class="chess-board" id="board">
+  <div class="grid">
+	<div class="chatbox-container" id="chatbox-container">
+		<form class="chatbox-form" id="chatbox-form">
+			<div class="chatbox" id="chatbox"></div>
+			<input type="text" class="chatbox-input" id="chatbox-input" placeholder="Message..."></input>
+		</form>
 	</div>
-	
-	
+	<div class="wrap">
+	<div class="chessboard" id="board"></div>
+	</div>
+	<div class="history"id="history">
+
+        <div class="titre">Historique</div>
+        <div class="coups">
+            <div class="coupW">Blanc</div>
+            <div class="coupB">Noir</div>
+		</div>
+	</div>
+	<div class="evaluation" id="evaluation">0</div>
+	<div class="fen" id="fen">
+		<div class="titreF">FEN de la partie</div>
+	</div>
+  </div>
+</body>
+</html>
 	<script type="module" src="chess.js"></script>
 	<script type="module" src="display.js"></script>
+	<script type="module" src="main.js"></script>
 </body>
 </html>

@@ -1,12 +1,136 @@
-body{
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 100vh;
+
+.grid {
+	display: grid;
+	grid-template-columns: 25% 50% 25%;
+	grid-template-rows: 2fr 0.5fr 2fr;
+	grid-template-areas:
+	  "chatbox wrap history"
+	  ". wrap ."
+	  ". fen .";
+  }
+  
+
+.wrap{
+	grid-area: wrap;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
 }
+
+.chatbox-container{
+	grid-area: chatbox;
+	width: 352px;
+	height: 377px;
+	margin: 0 auto;
+	position: relative;
+	margin: 20px 20px;
+	padding: 10px 30px;
+	border-radius: 25px;
+	border: 1px solid #000000;
+	background-color: rgba(0,0,0,0.5);
+}
+
+.chatbox-input{
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 15px;
+	width: 100%;
+	margin-bottom: 10px;
+	margin-top: 40px;
+}
+
+.chatbox-form{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.answer{
+	width: 100%;
+	height: 50%;
+	margin: 20px 0;
+	overflow-y: scroll;
+}
+
+
+.chessboard{
+	width: 420px;
+	height: 420px;
+	margin: 0 auto;
+	
+}
+
+
+
+
+
+
+  .history {
+	grid-area: history;
+	color: #F5F5F5;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #000000;
+	margin-top: 20px;
+	width: 300px;
+	height: 300px;
+    background-color: rgba(0,0,0,0.5);
+    margin-left: 75px;
+        overflow-y: scroll;
+    text-align: center;
+	font-weight: bold;
+	text-decoration: solid 1px #000000;
+  
+  }
+
+.titre{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.coups{
+    display : flex;
+	font-weight: unset;
+}
+
+.coupB, .coupW{
+    width: 50%;
+    height: fit-content;
+    margin: 0;
+    padding: 0;
+	color:#F5F5F5;
+	
+}
+
+.coupsB{
+    float:right
+}
+.coupsW{
+    float: left;
+}
+  
+
+.titreF{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+  .fen {
+	height: 20%;
+	grid-area: fen;
+	background-color: #FFFFFF;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: 20px;
+  }
 
 .row{
 	display: flex;
@@ -36,7 +160,9 @@ body{
 	width: 20px;
 	height: 20px;
 	text-align: center;
-	margin:auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .colonne{
@@ -68,3 +194,4 @@ body{
 .dark.selected{
 	background: radial-gradient(circle at center, #25ce90, #b58863 75%);
 }
+

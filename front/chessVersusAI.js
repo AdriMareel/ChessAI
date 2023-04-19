@@ -159,4 +159,20 @@ export function move(chessCoordinatePrevious, chessCoordinateNext) {
 				if (blackCheck) { isCheck("black") }
 			});
 
+
+			fetch('/evaluation', {
+				method: 'POST',
+				headers: {
+				'Content-Type': 'application/json'
+				},
+			})
+				.then(res => res.json())
+				.then(data => {
+					if (data.score.type == "mate"){
+						document.getElementById("evaluation").innerHTML = "M" + data.score.value;
+					}
+					else{
+						document.getElementById("evaluation").innerHTML = data.score;
+					}
+				});
 }

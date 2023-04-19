@@ -103,6 +103,7 @@ export function displayMove(piece, destination){
 }
 
 
+
 //put the king of color in check
 export function isCheck(color){
 		//get element with alt color-king
@@ -117,4 +118,31 @@ export function clearCheck(){
 	for (let item of document.getElementsByClassName("square")) {
 		item.classList.remove("checked");
 	}
+}
+
+export function displayHistory(coup, color){
+    console.log(document.getElementById("history").innerHTML);
+    
+    let Origine= document.getElementById("history").innerHTML;
+    
+    let rajout = "";
+    if(color=="white"){
+        rajout = `<div class="coups"><div class="coupW">${coup}</div>`
+    }
+    else{
+        //on enleve le </div> de la ligne précédente
+        Origine = Origine.substring(0, Origine.length - 6);
+        rajout = `<div class="coupB">${coup}</div></div>`
+    }
+
+    document.getElementById("history").innerHTML = Origine + rajout;
+}
+
+export function promoting(id, futurePiece){
+    //get the alt of the id
+    let piece = document.getElementById(id).firstChild.alt;
+    //get the 6first characcters of the piece
+    let color = piece.substring(0, 5);
+    
+    document.getElementById(id).innerHTML = `<img src="public/pieces/${color}-${futurePiece}.png" alt="${color+futurePiece}" class="piece" >`;
 }

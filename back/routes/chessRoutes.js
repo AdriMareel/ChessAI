@@ -5,11 +5,24 @@ module.exports = (app, game, engine) => {
         res.send(game.getPossibleMoves(game.board, game.board[y][x]));
     });
 
-    app.post('/movePiece', (req, res) => {
+    app.post('/movePiece', async (req, res) => {
         const {x, y, xNext, yNext} = req.body;
-        res.send(game.movePiece(x, y, xNext, yNext));
-        game.updateHistory(game.board, game.board[yNext][xNext], xNext, yNext, x, y);
+        game.movePiece(x, y, xNext, yNext);
+        const history = await game.updateHistory(game.board, game.board[yNext][xNext], xNext, yNext, x, y);
+        game.checkMate(game.board, game.turn);
+        game.staleMate(game.board, game.turn);
+        res.send({history});
+        game.displayHistory();
         engine.update(game.board, game.turn);
+        engine.evaluateBoard(engine.board, engine.turn);
+    });
+
+    app.post('/promotion', (req, res) => {
+        const {promotion, x, y} = req.body;
+        
+        res.send(game.promotion(promotion, x, y));
+        console.log("promotion time", promotion, x, y)
+        
     });
 
 	app.post('/evaluation', async (req, res) => {

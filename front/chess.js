@@ -1,4 +1,4 @@
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected} from './display.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected, promoting, displayHistory} from './display.js';
 
 export let clickedPiece = null;
 
@@ -43,12 +43,14 @@ export function getPossibleMoves(chessCoordinate){
 		});
 }
 
+
+
 export function move(chessCoordinatePrevious, chessCoordinateNext){
 
 	removeSelected()
 	const {x , y} = chessCoordinateToXY(chessCoordinatePrevious);
 	const {x : xNext , y : yNext} = chessCoordinateToXY(chessCoordinateNext);
-	
+	let color = document.getElementById(chessCoordinatePrevious).firstChild.alt.slice(0, 5)
 	console.warn('MOVE');
 	console.log(chessCoordinatePrevious, chessCoordinateNext);
 
@@ -89,6 +91,41 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 		}
 	}
 
+	//we check for the promotion
+if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")){
+	//if the pawn is on the last rank
+	console.log("promotion!")
+	if(chessCoordinateNext.slice(1, 2) == 1 || chessCoordinateNext.slice(1, 2) == 8){
+		//we ask the user what piece he wants to promote to
+		let promotion 
+		let choices = ["queen", "rook", "bishop", "knight"]
+		do{
+			promotion = prompt("What piece do you want to promote to ? (queen, rook, bishop, knight)")
+		//while promotion isn't equal to queen, rook, bishop or knight
+		}while(!choices.includes(promotion))
+		//we send the promotion to the server
+
+
+		fetch('/promotion', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				promotion : promotion,
+				x : x,
+				y : y,
+			})
+		})
+			.then(res => res.json())
+			.then(data => {
+				console.log("promotion done")
+				if(data == true){
+					promoting(chessCoordinatePrevious, promotion)
+				}
+			});
+	}
+}
 
 	fetch('/movePiece', {
 		method: 'POST',
@@ -104,6 +141,10 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 	})
 		.then(res => res.json())
 		.then(data => {
+			console.log(data.history)
+			//take last element of history
+			
+			displayHistory(data.history[data.history.length - 1],color)
 			untoggleMoveMode();
 			clickedPiece = null;
 			displayMove(chessCoordinatePrevious, chessCoordinateNext);
