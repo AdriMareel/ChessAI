@@ -148,3 +148,33 @@ export function promoting(id, futurePiece){
     
     document.getElementById(id).innerHTML = `<img src="public/pieces/${color}-${futurePiece}.png" alt="${color+futurePiece}" class="piece" >`;
 }
+
+export function displayBestMove(idStart, idEnd) {
+	//delete the element with id line if it exists
+	if(document.getElementById("line")){
+		document.getElementById("line").remove();
+	}
+
+	var start = document.getElementById(idStart);
+	var end = document.getElementById(idEnd);
+	
+	var startRect = start.getBoundingClientRect();
+	var endRect = end.getBoundingClientRect();
+  
+	var startX = startRect.left - (startRect.width / 2);
+	var startY = startRect.top - (startRect.height / 2);
+	var endX = endRect.left - (endRect.width / 2);
+	var endY = endRect.top - (endRect.height / 2);
+  
+	var line = document.createElement("div");
+	line.id = "line";
+	line.style.position = "absolute";
+	line.style.borderBottom = "3px solid red";
+	line.style.left = startX + "px";
+	line.style.top = startY + "px";
+	line.style.width = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) + "px";
+	line.style.transform = "rotate(" + Math.atan2(endY - startY, endX - startX) + "rad)";
+	
+	document.body.appendChild(line);
+}
+displayBestMove("e2", "e4");

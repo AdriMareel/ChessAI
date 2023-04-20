@@ -1,4 +1,4 @@
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected, promoting, displayHistory} from './display.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected, promoting, displayHistory, displayBestMove} from './display.js';
 
 export let clickedPiece = null;
 
@@ -45,8 +45,7 @@ export function getPossibleMoves(chessCoordinate){
 
 
 
-export function move(chessCoordinatePrevious, chessCoordinateNext){
-
+export async function move(chessCoordinatePrevious, chessCoordinateNext){
 	removeSelected()
 	const {x , y} = chessCoordinateToXY(chessCoordinatePrevious);
 	const {x : xNext , y : yNext} = chessCoordinateToXY(chessCoordinateNext);
@@ -94,7 +93,6 @@ export function move(chessCoordinatePrevious, chessCoordinateNext){
 	//we check for the promotion
 if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")){
 	//if the pawn is on the last rank
-	console.log("promotion!")
 	if(chessCoordinateNext.slice(1, 2) == 1 || chessCoordinateNext.slice(1, 2) == 8){
 		//we ask the user what piece he wants to promote to
 		let promotion 
@@ -106,7 +104,7 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 		//we send the promotion to the server
 
 
-		fetch('/promotion', {
+		await fetch('/promotion', {
 			method: 'POST',
 			headers: {
 			'Content-Type': 'application/json'
@@ -127,7 +125,7 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 	}
 }
 
-	fetch('/movePiece', {
+	await fetch('/movePiece', {
 		method: 'POST',
 		headers: {
 		'Content-Type': 'application/json'
@@ -143,7 +141,6 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 		.then(data => {
 			console.log(data.history)
 			//take last element of history
-			
 			displayHistory(data.history[data.history.length - 1],color)
 			untoggleMoveMode();
 			clickedPiece = null;
@@ -151,7 +148,7 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 		});
 	
 		
-	fetch('/isChecked', {
+	await fetch('/isChecked', {
 			method: 'POST',
 			headers: {
 			'Content-Type': 'application/json'
@@ -173,7 +170,7 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 			});
 
 			
-fetch('/evaluation', {
+await fetch('/evaluation', {
 		method: 'POST',
 		headers: {
 		'Content-Type': 'application/json'
@@ -181,6 +178,9 @@ fetch('/evaluation', {
 	})
 		.then(res => res.json())
 		.then(data => {
+			let idFirst = data.moves[0].slice(0, 2);
+			let idSecond = data.moves[0].slice(2, 4);
+			displayBestMove(idFirst, idSecond);
 			if (data.score.type == "mate"){
 				document.getElementById("evaluation").innerHTML = "M" + data.score.value;
 			}
@@ -189,7 +189,7 @@ fetch('/evaluation', {
 			}
 		});
 
-	fetch('/getFen', {
+	await fetch('/getFen', {
 		method: 'POST',
 		headers: {
 		'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ fetch('/evaluation', {
 	})
 		.then(res => res.json())
 		.then(data => {
-		
+			console.log("fen", data.fen);
 			document.getElementById("fenGame").innerHTML = data.fen;
 		});
 
