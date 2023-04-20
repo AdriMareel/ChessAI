@@ -39,6 +39,9 @@ body{
 
   .history {
 	grid-area: history;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 	color: #F5F5F5;
 	border-radius: 25px;
 	border: 1px solid #000000;
@@ -55,11 +58,15 @@ body{
   
   }
 
-
+  .titre{
+	margin-bottom:10px ;
+	width: 80%;
+  }
 
 .coups{
     display : flex;
 	font-weight: unset;
+	width: 80%;
 }
 
 .coupB:hover, .coupW:hover{

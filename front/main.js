@@ -1,4 +1,7 @@
+var messagesGPT = [
+];
 async function requestGPT(question, temperature = 150, max_tokens = 600,response) {
+
     console.log("Question : " + question)
     let apiKey = "";
 await fetch('/getApiKey', {
@@ -14,7 +17,8 @@ await fetch('/getApiKey', {
 			});
 
   //
-            
+    messagesGPT.push({"role": "user", "content": question});
+
         var response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -24,8 +28,7 @@ await fetch('/getApiKey', {
           },
           body: JSON.stringify({
             model: "gpt-3.5-turbo",
-            messages: [{"role": "system", "content": "Bonjour, comment puis-je vous aider ?" },
-                {"role": "user", "content": question}],
+            messages: messagesGPT,
             temperature: temperature,
             max_tokens: max_tokens,
           }),
@@ -40,7 +43,9 @@ await fetch('/getApiKey', {
         console.log(json);
         
         if (json.choices) {
-            return json.choices[0].message.content;
+            response = json.choices[0].message.content
+            messagesGPT.push({"role": "system", "content": response});
+            return response;
         } else {
             console.error("Error GPTDiff: " + json.error);
             return "Error GPTDiff: " + json.error.message;
