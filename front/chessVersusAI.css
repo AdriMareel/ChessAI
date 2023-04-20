@@ -2,8 +2,11 @@
 body{
 	background-color: #8a8787;
 	font-family: 'Roboto';
+	padding: 0;
+	margin: 0;
+	height: 100vh;
+	overflow: hidden;
 }
-
 
 .grid {
 	display: grid;
@@ -24,66 +27,27 @@ body{
 	align-items: center;
 }
 
-.chatbox-container{
-	grid-area: chatbox;
-	width: 352px;
-	height: 377px;
-	margin: 0 auto;
-	position: relative;
-	margin: 20px 20px;
-	padding: 10px 30px;
-	border-radius: 25px;
-	border: 1px solid #000000;
-	background-color: rgb(24, 24, 24);
-}
-
-.chatbox-input{
-	font-size: 16px;
-	border: none;
-	border-radius: 5px;
-	padding: 10px 15px;
-	width: 100%;
-	margin-bottom: 10px;
-	margin-top: 40px;
-}
-
-.chatbox-form{
-	height: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
-}
-
-.answer{
-	width: 100%;
-	position: relative;
-	height: 50%;
-	margin: 20px 0;
-	overflow-y: auto;
-	color: white;
-}
 
 
 .chessboard{
 	width: 420px;
 	height: 420px;
 	margin: 0 auto;
-	transform: scale(1.25);
+	transform: scale(1.5);
 	
 }
 
   .history {
 	grid-area: history;
 	color: #F5F5F5;
-	padding: 10px;
-	border-radius: 5px;
+	border-radius: 25px;
 	border: 1px solid #000000;
-	margin-top: 20px;
-	width: 300px;
-	height: 300px;
+	width: 352px;
+	height: 377px;
     background-color: rgb(24, 24, 24);
-    margin-left: 75px;
+	margin-top: 100px;
+	padding: 10px 30px;
+	border-radius: 25px;
 	overflow:auto;
     text-align: center;
 	font-weight: bold;
@@ -91,17 +55,6 @@ body{
   
   }
 
-.titleF{
-	font-size: 20px;
-	font-weight: bold;
-	text-align: center;
-	margin-bottom: 20px;
-}
-
-.fenGame{
-	font-size: 14px;
-	text-align: center;
-}
 
 
 .coups{
@@ -135,27 +88,6 @@ body{
 	float: right;
 	border: solid 1px, #F5F5F5;
 }
-
-
-
-.titreF{
-	font-size: 20px;
-	font-weight: bold;
-	text-align: center;
-	margin-bottom: 30px;
-}
-
-  .fen {
-	height: 20%;
-	color: white;
-	grid-area: fen;
-	background-color: rgb(24, 24, 24);
-	border: 1px solid #000000;
-	border-radius: 5px;
-	padding: 10px;
-	margin-top: 20px;
-  }
-
 
 .evaluation{
 	display: flex;
