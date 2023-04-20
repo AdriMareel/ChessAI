@@ -2,8 +2,11 @@
 body{
 	background-color: #8a8787;
 	font-family: 'Roboto';
+	padding: 0;
+	margin: 0;
+	height: 100vh;
+	overflow: hidden;
 }
-
 
 .grid {
 	display: grid;
@@ -30,7 +33,7 @@ body{
 	height: 377px;
 	margin: 0 auto;
 	position: relative;
-	margin: 20px 20px;
+	margin-top: 40px;
 	padding: 10px 30px;
 	border-radius: 25px;
 	border: 1px solid #000000;
@@ -69,21 +72,21 @@ body{
 	width: 420px;
 	height: 420px;
 	margin: 0 auto;
-	transform: scale(1.25);
+	transform: scale(1.5);
 	
 }
 
   .history {
 	grid-area: history;
 	color: #F5F5F5;
-	padding: 10px;
 	border-radius: 5px;
 	border: 1px solid #000000;
-	margin-top: 20px;
-	width: 300px;
-	height: 300px;
+	width: 352px;
+	height: 377px;
     background-color: rgb(24, 24, 24);
-    margin-left: 75px;
+	margin-top: 40px;
+	padding: 10px 30px;
+	border-radius: 25px;
 	overflow:auto;
     text-align: center;
 	font-weight: bold;
@@ -95,14 +98,32 @@ body{
 	font-size: 20px;
 	font-weight: bold;
 	text-align: center;
-	margin-bottom: 20px;
+	float: left;
+	grid-area: fen;
+	width: 200px;
+	height: 50px;
+	margin-top: 50px;
 }
 
 .fenGame{
 	font-size: 14px;
 	text-align: center;
+	float: right;
 }
 
+  .fen {
+	height: 50px;
+	width: 450px;
+	display: inline-block;
+	margin: 0 auto;
+	color: white;
+	grid-area: fen;
+	background-color: rgb(24, 24, 24);
+	border: 1px solid #000000;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: 20px;
+  }
 
 .coups{
     display : flex;
@@ -135,27 +156,6 @@ body{
 	float: right;
 	border: solid 1px, #F5F5F5;
 }
-
-
-
-.titreF{
-	font-size: 20px;
-	font-weight: bold;
-	text-align: center;
-	margin-bottom: 30px;
-}
-
-  .fen {
-	height: 20%;
-	color: white;
-	grid-area: fen;
-	background-color: rgb(24, 24, 24);
-	border: 1px solid #000000;
-	border-radius: 5px;
-	padding: 10px;
-	margin-top: 20px;
-  }
-
 
 .evaluation{
 	display: flex;
