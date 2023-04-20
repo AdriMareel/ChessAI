@@ -11,8 +11,29 @@
 	<title>Play VS AI</title>
 </head>
 <body>
-	<div class="chess-board" id="board">
+	<nav class="navbar">
+		<div class="logo">CHESS AI</div>
+		<button class="btn" onclick="location.href='/menu.html'">Return to Menu</button>
+	</nav>
+
+	<div class="grid">
+		<div class="wrap">
+			<div class="chessboard" id="board"></div>
+		</div>
+
+		<div class="history"id="history">
+
+			<div class="titre">Historique</div>
+			<div class="coups">
+				<div class="turn"></div>
+				<div class="coupW">Blanc</div>
+				<div class="coupB">Noir</div>
+			</div>
+		</div>
 	</div>
+	
+
+
 	
 	<script type="module" src="chessVersusAI.js"></script>
 	<script type="module" src="displayVersusAI.js"></script>

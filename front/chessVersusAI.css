@@ -1,0 +1,263 @@
+
+body{
+	background-color: #8a8787;
+	font-family: 'Roboto';
+}
+
+
+.grid {
+	display: grid;
+	grid-template-columns: 25% 50% 25%;
+	grid-template-rows: 2fr 1fr 2fr;
+	grid-template-areas:
+	  "chatbox wrap history"
+	  ". wrap ."
+	  ". fen .";
+  }
+  
+
+.wrap{
+	grid-area: wrap;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.chatbox-container{
+	grid-area: chatbox;
+	width: 352px;
+	height: 377px;
+	margin: 0 auto;
+	position: relative;
+	margin: 20px 20px;
+	padding: 10px 30px;
+	border-radius: 25px;
+	border: 1px solid #000000;
+	background-color: rgb(24, 24, 24);
+}
+
+.chatbox-input{
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 15px;
+	width: 100%;
+	margin-bottom: 10px;
+	margin-top: 40px;
+}
+
+.chatbox-form{
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.answer{
+	width: 100%;
+	position: relative;
+	height: 50%;
+	margin: 20px 0;
+	overflow-y: auto;
+	color: white;
+}
+
+
+.chessboard{
+	width: 420px;
+	height: 420px;
+	margin: 0 auto;
+	transform: scale(1.25);
+	
+}
+
+  .history {
+	grid-area: history;
+	color: #F5F5F5;
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #000000;
+	margin-top: 20px;
+	width: 300px;
+	height: 300px;
+    background-color: rgb(24, 24, 24);
+    margin-left: 75px;
+	overflow:auto;
+    text-align: center;
+	font-weight: bold;
+	text-decoration: solid 1px #000000;
+  
+  }
+
+.titleF{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.fenGame{
+	font-size: 14px;
+	text-align: center;
+}
+
+
+.coups{
+    display : flex;
+	font-weight: unset;
+}
+
+.coupB:hover, .coupW:hover{
+	background-color: #25a6ce;
+	cursor: pointer;
+}
+.coupB, .coupW{
+    width: 45%;
+    margin: 0;
+    padding: 0;
+	color:#F5F5F5;
+	border: #bfbfbf solid 1px;
+}
+
+.coupsB{
+    float:right
+}
+.coupsW{
+    float: left;
+}
+  
+.turn{
+	width: 10%;
+	margin : 0;
+	padding: 0;
+	float: right;
+	border: solid 1px, #F5F5F5;
+}
+
+
+
+.titreF{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+  .fen {
+	height: 20%;
+	color: white;
+	grid-area: fen;
+	background-color: rgb(24, 24, 24);
+	border: 1px solid #000000;
+	border-radius: 5px;
+	padding: 10px;
+	margin-top: 20px;
+  }
+
+
+.evaluation{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	font-size: 60px;
+	font-weight: bold;
+}
+
+
+.row{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.square{
+	width: 50px;
+	height: 50px;
+	background-color: #000;
+}
+
+.light{
+	background-color: #f0d9b5;
+}
+
+.dark{
+	background-color: #b58863;
+}
+
+.piece{
+	width: 50px;
+	height: 50px;
+}
+
+.ligne{
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.colonne{
+	width: 50px;
+	height: 20px;
+	text-align: center;
+}
+
+.dark.possibleMove{
+	background: radial-gradient(circle at center, #25a6ce, #b58863 75%);
+}
+
+.light.possibleMove{
+	background: radial-gradient(circle at center, #25a6ce, #f0d9b5 75%);
+}
+
+.dark.checked{
+	background: radial-gradient(circle at center, rgb(255, 67, 67), #b58863 75%);
+}
+
+.light.checked{
+	background: radial-gradient(circle at center, rgb(255, 67, 67), #f0d9b5 75%);
+}
+
+.light.selected{
+	background: radial-gradient(circle at center, #25ce90, #f0d9b5 75%);
+}
+
+.dark.selected{
+	background: radial-gradient(circle at center, #25ce90, #b58863 75%);
+}
+
+
+/* Navbar styles */
+.navbar {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #333;
+	color: white;
+	padding: 10px;
+}
+
+/* Logo styles */
+.logo {
+	font-size: 24px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+/* Button styles */
+.btn {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	margin-right: 10px;
+}
