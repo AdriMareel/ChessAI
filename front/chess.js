@@ -34,9 +34,8 @@ export function getPossibleMoves(chessCoordinate){
 		.then(res => res.json())
 		.then(data => {
 			removePossibleMoves();
-			
+
 			data.forEach(element => {
-				console.log(element);
 				displayPossibleMoves(xyToChessCoordinate(element));
 				toggleMoveMode();
 			});
@@ -54,15 +53,12 @@ export async function move(chessCoordinatePrevious, chessCoordinateNext){
 	console.log(chessCoordinatePrevious, chessCoordinateNext);
 
 	//si la piece bougée est un roi et qu'il s'agit d'un roque
-	console.log("piece bougée", chessCoordinatePrevious)
 	//first child alt contain "king"
 	if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("king")){
 		//take the 6 first char of the first child alt
 		//if it's "white" it's a white king
 		//if it's "black" it's a black king
 		//let color = document.getElementById(chessCoordinatePrevious).firstChild.alt.slice(0, 5) 
-		
-		console.log("roi bougé", chessCoordinatePrevious, chessCoordinateNext)
 
 		let chessCoordinatePreviousR 
 		let chessCoordinateNextR
@@ -157,11 +153,6 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 		})
 			.then(res => res.json())
 			.then(data => {
-				//data is send with black and white parameter containing true or false
-				//if true, it's check
-				//if false, it's not check
-				console.log("isCheck", data)
-				//read "black" and "white" parameter from object
 				let blackCheck = data.black
 				let whiteCheck = data.white
 				clearCheck()
@@ -180,7 +171,10 @@ await fetch('/evaluation', {
 		.then(data => {
 			let idFirst = data.moves[0].slice(0, 2);
 			let idSecond = data.moves[0].slice(2, 4);
-			displayBestMove(idFirst, idSecond);
+			console.log("Move conseillé", idFirst, idSecond);
+			displayBestMove(idFirst, idSecond, color);
+
+
 			if (data.score.type == "mate"){
 				document.getElementById("evaluation").innerHTML = "M" + data.score.value;
 			}
@@ -201,7 +195,6 @@ await fetch('/evaluation', {
 	})
 		.then(res => res.json())
 		.then(data => {
-			console.log("fen", data.fen);
 			document.getElementById("fenGame").innerHTML = data.fen;
 		});
 

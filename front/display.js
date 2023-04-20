@@ -149,32 +149,43 @@ export function promoting(id, futurePiece){
     document.getElementById(id).innerHTML = `<img src="public/pieces/${color}-${futurePiece}.png" alt="${color+futurePiece}" class="piece" >`;
 }
 
-export function displayBestMove(idStart, idEnd) {
+export function displayBestMove(idStart, idEnd, color) {
 	//delete the element with id line if it exists
 	if(document.getElementById("line")){
 		document.getElementById("line").remove();
 	}
 
-	var start = document.getElementById(idStart);
-	var end = document.getElementById(idEnd);
+	if (document.getElementById("pointStart")){
+		document.getElementById("pointStart").remove();
+	}
 	
-	var startRect = start.getBoundingClientRect();
-	var endRect = end.getBoundingClientRect();
-  
-	var startX = startRect.left - (startRect.width / 2);
-	var startY = startRect.top - (startRect.height / 2);
-	var endX = endRect.left - (endRect.width / 2);
-	var endY = endRect.top - (endRect.height / 2);
-  
+	if (document.getElementById("pointEnd")){
+		document.getElementById("pointEnd").remove();
+	}
+
+	let start = document.getElementById(idStart);
+	let end = document.getElementById(idEnd);
+	
+	let startRect = start.getBoundingClientRect();
+	let endRect = end.getBoundingClientRect();
+	
+	let startX = startRect.left + startRect.width / 2;
+	let endX = endRect.left + endRect.width / 2;
+	let startY = startRect.top + startRect.height / 2;
+	let endY = endRect.top + endRect.height / 2;
+	
 	var line = document.createElement("div");
 	line.id = "line";
+	line.style.pointerEvents = "none";
 	line.style.position = "absolute";
 	line.style.borderBottom = "3px solid red";
+	line.style.backgroundColor = "blue";
 	line.style.left = startX + "px";
 	line.style.top = startY + "px";
 	line.style.width = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)) + "px";
+	line.style.transformOrigin = "top left";
 	line.style.transform = "rotate(" + Math.atan2(endY - startY, endX - startX) + "rad)";
-	
+
 	document.body.appendChild(line);
 }
 displayBestMove("e2", "e4");
