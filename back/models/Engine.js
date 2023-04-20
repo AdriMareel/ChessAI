@@ -149,8 +149,15 @@ module.exports = class Engine extends Game {
 					});
 					
 					if (!mate){
-						if ((result.moves[0].score.value - 100) > result.moves[1].score.value ){
-							resolve({score : (result.moves[0].score.value/100).toFixed(2), moves : result.moves[0].uci});
+						if(result.moves.length >= 2){
+							if ((result.moves[0].score.value - 100) > result.moves[1].score.value ){
+								let score = result.moves[0].score.value;
+								
+								if (this.movesNumber % 2 == 1){
+									score *= -1;
+								}
+								resolve({score : (score/100).toFixed(2), moves : result.moves[0].uci});
+							}
 						}
 					}
 
