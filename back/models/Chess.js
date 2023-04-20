@@ -480,6 +480,10 @@ module.exports = class Game {
 		if (this.checkMate(this.board, this.board[endY][endX].color === "white" ? "black" : "white")) {
 			this.moveType = "checkmate";
 		}
+		if (this.staleMate(this.board, this.board[endY][endX].color === "white" ? "black" : "white")) {
+			this.moveType = "stalemate";
+		}
+
 
 		this.changeTurn();
 		return true;
@@ -582,6 +586,12 @@ module.exports = class Game {
 			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
 			this.moveHistory.push(piece.type.charAt(0)+move+"#");
 		}
+		if(this.moveType === "stalemate") {
+			yEnd = yEnd;
+			xEnd = xEnd;
+			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
+			this.moveHistory.push(piece.type.charAt(0)+move+"=");
+		}
 		if (this.moveType === "castleShort") {
 			yEnd = yEnd;
 			xEnd = xEnd;
@@ -592,12 +602,6 @@ module.exports = class Game {
 			xEnd = xEnd;
 			this.moveHistory.push("O-O-O");
 		}
-		/*if(moveType === "promotion") {
-			yEnd = yEnd;
-			xEnd = xEnd;
-			move = this.xyToChessCoordinate({x:xEnd,y:yEnd});
-			this.moveHistory.push(piece.type.charAt(0)+move+"="+piece.type.charAt(0));
-		}*/
 
 
 		console.log("----- HISTORY -----");
@@ -617,22 +621,30 @@ module.exports = class Game {
 		//check if the king is in check
 		if (this.checkIfChecked(board, color)) {
 			//check if the king can move
+			this.changeTurn();
 			if (this.getAllPossibleMoves(board, color).length === 0) {
-				console.log("t'as perdu pd, les " + color + " sont en echec et mat")
+				console.log("t'as perdu, les " + color + " sont en echec et mat")
+				this.changeTurn();
 				return true;
 			}
+			this.changeTurn();
 		}
+		return false;
 	}
 
 	staleMate(board, color) {
 		//check if the king is in check
 		if (!this.checkIfChecked(board, color)) {
+			this.changeTurn();
 			//check if the king can move
 			if (this.getAllPossibleMoves(board, color).length === 0) {
-				console.log("égalité les pds")
+				console.log("égalité")
+				this.changeTurn();
 				return true;
 			}
+			this.changeTurn();
 		}
+		return false;
 	}
 	getAllPossibleMoves(board, color) {
 		let possibleMoves = [];
