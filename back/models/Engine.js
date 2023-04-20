@@ -131,6 +131,7 @@ module.exports = class Engine extends Game {
 				]
 				})
 				.then((result) => {
+					
 					console.log(result.moves);
 					//check if there's a forced mate
 					let mate = false;
@@ -228,7 +229,7 @@ module.exports = class Engine extends Game {
 	async playAI(){
 		let response = await this.evaluateBoard(this.board, this.turn);
 		console.log("RESPONSE", response);
-		let move = response.moves.uci[0];
+		let move = response.moves[0];
 		let start = move.substring(0,2);
 		let end = move.substring(2);
 

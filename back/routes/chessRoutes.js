@@ -9,21 +9,8 @@ module.exports = (app, game, engine) => {
         const {x, y, xNext, yNext} = req.body;
         game.movePiece(x, y, xNext, yNext);
         const history = await game.updateHistory(game.board, game.board[yNext][xNext], xNext, yNext, x, y);
-        if(game.checkMate(game.board, game.turn)){
-			res.send({history});
-		}
-		else{
-			if (game.staleMate(game.board, game.turn)){
-				res.send({history});
-			}
-			else{
-				res.send({history});
-        		engine.update(game.board, game.turn);
-			}
-		}
-        
-        
-        
+		res.send({history});
+		engine.update(game.board, game.turn);
     });
 
     app.post('/promotion', (req, res) => {
@@ -75,11 +62,11 @@ module.exports = (app, game, engine) => {
     });
 
 	app.post('/checkmate', (req, res) => {
-		res.send(game.checkMate(game.board, game.turn == "white" ? "black" : "white"));
+		res.send(game.checkMate(game.board, game.turn));
 	});
 
 	app.post('/stalemate', (req, res) => {
-		res.send(game.checkMate(game.board, game.turn == "white" ? "black" : "white"));
+		res.send(game.checkMate(game.board, game.turn));
 	});
 
 }
