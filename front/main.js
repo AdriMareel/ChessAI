@@ -19,6 +19,8 @@ await fetch('/getApiKey', {
   //
     messagesGPT.push({"role": "user", "content": question});
 
+    document.getElementById("chatbox-input").value = "";
+
         var response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: {
