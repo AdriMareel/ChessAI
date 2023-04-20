@@ -172,7 +172,7 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 			document.getElementById("fenGame").innerHTML = data.fen;
 		});
 		
-		let endGame = false
+		let endGame
 		fetch('/checkmate', {
 			method: 'POST',
 			headers: {
@@ -184,14 +184,16 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 			.then(data => {
 				console.log("checkmate",data)
 				if(data==true){
-					displayEndGame(color)
 					endGame = true;
+					displayEndGame(color)
+					
 				}
-			});
-
-
-			if(endGame==false){
-				await fetch('/evaluation', {
+				else endGame = false;
+			})
+			.then(() => {
+				console.log("endgame", endGame)
+				if(!endGame){
+					fetch('/evaluation', {
 					method: 'POST',
 					headers: {
 					'Content-Type': 'application/json'
@@ -212,6 +214,9 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 							document.getElementById("evaluation").innerHTML = data.score;
 						}
 					});
-				}
+					}
+				});
+
+		
 		
 }
