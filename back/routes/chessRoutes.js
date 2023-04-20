@@ -69,4 +69,7 @@ module.exports = (app, game, engine) => {
 		res.send(game.checkMate(game.board, game.turn));
 	});
 
+	app.post('/getHistory', async (req, res) => {
+		res.send({history : game.moveHistory});
+	});
 }

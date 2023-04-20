@@ -1,5 +1,5 @@
 import { getPossibleMoves, clickedPiece, move } from "./chessVersusAI.js";
-
+let turn = 0;
 const chessCoordInit = [	
 	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",  // Black pieces
 	"a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7", // Black pawns
@@ -120,4 +120,23 @@ export function clearCheck(){
 	for (let item of document.getElementsByClassName("square")) {
 		item.classList.remove("checked");
 	}
+}
+
+export function displayHistory(coup, color){
+    let Origine= document.getElementById("history").innerHTML;
+    
+    let rajout = "";
+    if(color=="white"){
+		turn++;
+        rajout = `<div class="coups"><div class="turn">${turn}</div><div class="coupW">${coup}</div><div class="coupB"></div></div>`
+    }
+    else{
+        //on enleve le </div> de la ligne précédente
+
+        Origine = Origine.substring(0, Origine.length - 12);
+		console.log
+        rajout = `${coup}</div></div>`
+    }
+
+    document.getElementById("history").innerHTML = Origine + rajout;
 }

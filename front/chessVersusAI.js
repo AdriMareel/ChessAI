@@ -1,6 +1,8 @@
+import { displayHistory } from './displayVersusAI.js';
 import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected } from './displayVersusAI.js';
 
 export let clickedPiece = null;
+let history = []; 
 
 function chessCoordinateToXY(chessCoord) {
 	const file = chessCoord[0].toLowerCase().charCodeAt(0) - 97;
@@ -50,12 +52,12 @@ export async function move(chessCoordinatePrevious, chessCoordinateNext) {
 
 	console.warn('MOVE');
 	console.log(chessCoordinatePrevious, chessCoordinateNext);
-
+	let color = document.getElementById(chessCoordinatePrevious).firstChild.alt.slice(0, 5) 
 	if (document.getElementById(chessCoordinatePrevious).firstChild.alt.match("king")) {
 		//take the 6 first char of the first child alt
 		//if it's "white" it's a white king
 		//if it's "black" it's a black king
-		//let color = document.getElementById(chessCoordinatePrevious).firstChild.alt.slice(0, 5) 
+	
 
 		console.log("roi bougé", chessCoordinatePrevious, chessCoordinateNext)
 
@@ -98,6 +100,8 @@ export async function move(chessCoordinatePrevious, chessCoordinateNext) {
 	})
 		.then(res => res.json())
 		.then(data => {
+
+			displayHistory(data.history[data.history.length - 1],color)
 			untoggleMoveMode();
 			clickedPiece = null;
 			displayMove(chessCoordinatePrevious, chessCoordinateNext);
@@ -124,7 +128,6 @@ export async function move(chessCoordinatePrevious, chessCoordinateNext) {
 			if (whiteCheck) { isCheck("white") }
 			if (blackCheck) { isCheck("black") }
 		});
-
 
 	await fetch('/playAI', {
 		method: 'POST',
@@ -163,4 +166,17 @@ export async function move(chessCoordinatePrevious, chessCoordinateNext) {
 			if (blackCheck) { isCheck("black") }
 		});
 
+
+		await fetch('/getHistory', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(),
+		})
+			.then(res => res.json())
+			.then(data => {
+				console.log("hey ho",data.history)
+				displayHistory(data.history[data.history.length - 1],"black")
+			});
 }
