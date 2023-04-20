@@ -1,12 +1,26 @@
 async function requestGPT(question, temperature = 150, max_tokens = 600,response) {
     console.log("Question : " + question)
+    let apiKey = "";
+await fetch('/getApiKey', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+	})
+		.then(res => res.json())
+		.then(data => {
+            apiKey = data.apiKey;
+            console.log(data.apiKey)
+			});
 
+  //
+            
         var response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization:
-              "Bearer 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",
+              "Bearer "+ apiKey, 
           },
           body: JSON.stringify({
             model: "gpt-3.5-turbo",

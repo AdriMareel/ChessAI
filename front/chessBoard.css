@@ -8,7 +8,7 @@ body{
 .grid {
 	display: grid;
 	grid-template-columns: 25% 50% 25%;
-	grid-template-rows: 2fr 0.5fr 2fr;
+	grid-template-rows: 2fr 1fr 2fr;
 	grid-template-areas:
 	  "chatbox wrap history"
 	  ". wrap ."
@@ -60,7 +60,7 @@ body{
 	position: relative;
 	height: 50%;
 	margin: 20px 0;
-	overflow-y: scroll;
+	overflow-y: auto;
 	color: white;
 }
 
@@ -69,6 +69,7 @@ body{
 	width: 420px;
 	height: 420px;
 	margin: 0 auto;
+	transform: scale(1.25);
 	
 }
 
@@ -155,6 +156,17 @@ body{
 	margin-top: 20px;
   }
 
+
+.evaluation{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	font-size: 60px;
+	font-weight: bold;
+}
+
+
 .row{
 	display: flex;
 	flex-wrap: wrap;
@@ -218,3 +230,34 @@ body{
 	background: radial-gradient(circle at center, #25ce90, #b58863 75%);
 }
 
+
+/* Navbar styles */
+.navbar {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #333;
+	color: white;
+	padding: 10px;
+}
+
+/* Logo styles */
+.logo {
+	font-size: 24px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+/* Button styles */
+.btn {
+	background-color: #4CAF50;
+	color: white;
+	padding: 10px 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 16px;
+	margin-right: 10px;
+}

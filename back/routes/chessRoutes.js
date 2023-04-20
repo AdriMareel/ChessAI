@@ -71,4 +71,8 @@ module.exports = (app, game, engine) => {
         res.send({fen: engine.getFen(engine.board,engine.turn)});
     });
 
+    app.post('/getApiKey', (req, res) => {
+        res.send({apiKey: process.env.GPT_API_KEY});
+    });
+
 }
