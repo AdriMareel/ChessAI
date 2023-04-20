@@ -18,7 +18,6 @@ module.exports = (app, game, engine) => {
 			}
 			else{
 				res.send({history});
-				game.displayHistory();
         		engine.update(game.board, game.turn);
 			}
 		}
@@ -74,5 +73,13 @@ module.exports = (app, game, engine) => {
     app.post('/getApiKey', (req, res) => {
         res.send({apiKey: process.env.GPT_API_KEY});
     });
+
+	app.post('/checkmate', (req, res) => {
+		res.send(game.checkMate(game.board, game.turn == "white" ? "black" : "white"));
+	});
+
+	app.post('/stalemate', (req, res) => {
+		res.send(game.checkMate(game.board, game.turn == "white" ? "black" : "white"));
+	});
 
 }
