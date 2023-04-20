@@ -1,4 +1,4 @@
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected, promoting, displayHistory, displayBestMove} from './display.js';
+import { removePossibleMoves, displayPossibleMoves, displayEndGame, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected, promoting, displayHistory, displayBestMove} from './display.js';
 
 export let clickedPiece = null;
 
@@ -16,7 +16,6 @@ function xyToChessCoordinate(xyObj) {
 
 export function getPossibleMoves(chessCoordinate){
 	clickedPiece = chessCoordinate;
-	console.warn('GET POSSIBLE MOVES');
 	removeSelected()
 	displaySelected(chessCoordinate)
 	const {x , y} = chessCoordinateToXY(chessCoordinate);
@@ -48,9 +47,8 @@ export async function move(chessCoordinatePrevious, chessCoordinateNext){
 	removeSelected()
 	const {x , y} = chessCoordinateToXY(chessCoordinatePrevious);
 	const {x : xNext , y : yNext} = chessCoordinateToXY(chessCoordinateNext);
-	let color = document.getElementById(chessCoordinatePrevious).firstChild.alt.slice(0, 5)
-	console.warn('MOVE');
-	console.log(chessCoordinatePrevious, chessCoordinateNext);
+	let color = document.getElementById(chessCoordinatePrevious).firstChild.alt.slice(0, 5);
+
 
 	//si la piece bougée est un roi et qu'il s'agit d'un roque
 	//first child alt contain "king"
@@ -113,7 +111,6 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 		})
 			.then(res => res.json())
 			.then(data => {
-				console.log("promotion done")
 				if(data == true){
 					promoting(chessCoordinatePrevious, promotion)
 				}
@@ -135,7 +132,6 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 	})
 		.then(res => res.json())
 		.then(data => {
-			console.log(data.history)
 			//take last element of history
 			displayHistory(data.history[data.history.length - 1],color)
 			untoggleMoveMode();
@@ -161,28 +157,6 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 			});
 
 			
-await fetch('/evaluation', {
-		method: 'POST',
-		headers: {
-		'Content-Type': 'application/json'
-		},
-	})
-		.then(res => res.json())
-		.then(data => {
-			let idFirst = data.moves[0].slice(0, 2);
-			let idSecond = data.moves[0].slice(2, 4);
-			console.log("Move conseillé", idFirst, idSecond);
-			displayBestMove(idFirst, idSecond, color);
-
-
-			if (data.score.type == "mate"){
-				document.getElementById("evaluation").innerHTML = "M" + data.score.value;
-			}
-			else{
-				document.getElementById("evaluation").innerHTML = data.score;
-			}
-		});
-
 	await fetch('/getFen', {
 		method: 'POST',
 		headers: {
@@ -197,5 +171,47 @@ await fetch('/evaluation', {
 		.then(data => {
 			document.getElementById("fenGame").innerHTML = data.fen;
 		});
+		
+		let endGame = false
+		fetch('/checkmate', {
+			method: 'POST',
+			headers: {
+			'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(),
+		})
+			.then(res => res.json())
+			.then(data => {
+				console.log("checkmate",data)
+				if(data==true){
+					displayEndGame(color)
+					endGame = true;
+				}
+			});
 
+
+			if(endGame==false){
+				await fetch('/evaluation', {
+					method: 'POST',
+					headers: {
+					'Content-Type': 'application/json'
+					},
+				})
+					.then(res => res.json())
+					.then(data => {
+						let idFirst = data.moves[0].slice(0, 2);
+						let idSecond = data.moves[0].slice(2, 4);
+						console.log("Move conseillé", idFirst, idSecond);
+						displayBestMove(idFirst, idSecond, color);
+			
+			
+						if (data.score.type == "mate"){
+							document.getElementById("evaluation").innerHTML = "M" + data.score.value;
+						}
+						else{
+							document.getElementById("evaluation").innerHTML = data.score;
+						}
+					});
+				}
+		
 }

@@ -66,7 +66,7 @@ module.exports = (app, game, engine) => {
 	});
 
 	app.post('/stalemate', (req, res) => {
-		res.send(game.checkMate(game.board, game.turn));
+		res.send(game.staleMate(game.board, game.turn));
 	});
 
 	app.post('/getHistory', async (req, res) => {

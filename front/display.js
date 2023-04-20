@@ -14,6 +14,8 @@ const chessPieceInit = [
 	"white-rook", "white-knight", "white-bishop", "white-queen", "white-king", "white-bishop", "white-knight", "white-rook" // White pieces
 ];
 
+document.getElementById('endGame').style.display = "none";
+
 let board = document.getElementById("board");
 for (let i = 0; i < 9; i++) {
 	let row = document.createElement("div");
@@ -189,3 +191,24 @@ export function displayBestMove(idStart, idEnd, color) {
 	document.body.appendChild(line);
 }
 displayBestMove("e2", "e4");
+
+
+export function displayEndGame(color){
+	//blur the board
+	
+	//get history div text
+	let history = document.getElementById("history").innerHTML;
+	//check if the history has a # char
+	console.log(history)
+	if(history.includes("#")){
+		document.getElementById("body").classList.add("blur");
+		//display the endgame div
+		if(color == "white"){color = "blanc"}
+		else{color = "noir"}
+		document.getElementById("messageFin").innerHTML = "Echec et mat ! Les " + color + "s ont gagné !";
+		let winMessage = document.getElementById('endGame')
+		winMessage.classList.remove("hidden");
+		winMessage.classList.add('priority');
+		winMessage.style.display = "block";
+	}
+}

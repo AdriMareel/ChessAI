@@ -8,6 +8,40 @@ body{
 	overflow: hidden;
 }
 
+.blur > *{
+	filter: blur(3px);
+}
+
+.victoryMessage{
+	padding-left:40%;
+	
+}
+
+.priority{
+	z-index: 9999;
+	display: block;
+}
+
+
+#endGame{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: radial-gradient(circle, rgba(204,204,204,1) 0%, rgba(115,111,137,1) 35%, rgba(0,0,0,1) 100%);
+	padding: 20px;
+	width: 100%;
+	filter: blur(0px);
+	font-size: x-large;
+}
+
+
+.hidden{
+	display: none;	
+}
+
+
+
 .grid {
 	display: grid;
 	grid-template-columns: 25% 50% 25%;
