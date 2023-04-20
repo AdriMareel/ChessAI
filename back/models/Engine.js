@@ -16,7 +16,6 @@ module.exports = class Engine extends Game {
 	}
 
 	minimax(board, depth, alpha, beta, maximizingPlayer, movesPlayed) {
-		console.log("---------DEPTH" , depth, "---------");
 		if (depth === 0 || this.isGameOver(board)) {
 			return { score: this.evaluateBoard(board, maximizingPlayer ? "white" : "black"), moves: movesPlayed };
 		}
@@ -132,15 +131,27 @@ module.exports = class Engine extends Game {
 				]
 				})
 				.then((result) => {
+					console.log(result.moves);
 					//check if there's a forced mate
 					let mate = false;
 					result.moves.forEach(move => {
 						if (move.score.type == "mate"){
 							score = move.score;
-							console.log({score : score, moves : move});
-							resolve({score : score, moves : move});
+
+							// if the color is black, the score is negative
+							if (this.movesNumber % 2 == 1){
+								score *= -1;
+							}
+							console.log({score : score, moves : move.uci});
+							resolve({score : score, moves : move.uci});
 						}
 					});
+					
+					if (!mate){
+						if ((result.moves[0].score.value - 100) > result.moves[1].score.value ){
+							resolve({score : (result.moves[0].score.value/100).toFixed(2), moves : result.moves[0].uci});
+						}
+					}
 
 					// calculate the average score
 					result.moves.forEach(move => {
@@ -153,7 +164,8 @@ module.exports = class Engine extends Game {
 					if (this.movesNumber % 2 == 1){
 						score *= -1;
 					}
-					resolve({score : (score/100).toFixed(2), moves : result.moves[0]});
+					
+					resolve({score : (score/100).toFixed(2), moves : result.moves[0].uci});
 				})
 				.catch(error => {
 					console.error(error);
@@ -164,7 +176,6 @@ module.exports = class Engine extends Game {
 
 	getFen(board, color) {
 		let boardCopy = board.map(row => row.map(piece => piece));
-		this.displayBoardConsole(boardCopy);
 
 		// change the array to a fen string
 		let pieceTypes = ["pawn", "knight", "bishop", "rook", "queen", "king"];

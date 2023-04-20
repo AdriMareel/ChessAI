@@ -527,9 +527,6 @@ module.exports = class Game {
 		let move;
 		let pieceX;
 		let pieceY;
-		console.log(piece);
-		console.log(this.moveType)
-
 
 		for (let x = 0; x < board.length; x++) {
 			for (let y = 0; y < board[x].length; y++) {
