@@ -17,8 +17,6 @@ module.exports = (app, game, engine) => {
         const {promotion, x, y} = req.body;
         
         res.send(game.promotion(promotion, x, y));
-        console.log("promotion time", promotion, x, y)
-        
     });
 
 	app.post('/evaluation', async (req, res) => {

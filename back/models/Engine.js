@@ -87,8 +87,6 @@ module.exports = class Engine extends Game {
 		const piece = action.piece;
 		const move = action.move;
 
-		console.log("SIMULATE MOVE", action);
-
 		let pieceX;
 		let pieceY;
 
@@ -132,11 +130,14 @@ module.exports = class Engine extends Game {
 				})
 				.then((result) => {
 					
-					console.log(result.moves);
+					
 					//check if there's a forced mate
 					let mate = false;
 					result.moves.forEach(move => {
+						mate = true;
 						if (move.score.type == "mate"){
+
+							//console.log(move);
 							score = move.score;
 
 							// if the color is black, the score is negative
@@ -144,7 +145,8 @@ module.exports = class Engine extends Game {
 								score *= -1;
 							}
 							console.log({score : score, moves : move.uci});
-							resolve({score : score, moves : move.uci});
+							console.log("-----------------");
+							resolve({score : score.value, type : score.type , moves : move.uci});
 						}
 					});
 					
@@ -152,10 +154,11 @@ module.exports = class Engine extends Game {
 						if(result.moves.length >= 2){
 							if ((result.moves[0].score.value - 100) > result.moves[1].score.value ){
 								let score = result.moves[0].score.value;
-								
+
 								if (this.movesNumber % 2 == 1){
 									score *= -1;
 								}
+								console.log({score : (score/100).toFixed(2), moves : result.moves[0].uci});
 								resolve({score : (score/100).toFixed(2), moves : result.moves[0].uci});
 							}
 						}
@@ -172,7 +175,7 @@ module.exports = class Engine extends Game {
 					if (this.movesNumber % 2 == 1){
 						score *= -1;
 					}
-					
+					console.log({score : (score/100).toFixed(2), moves : result.moves[0].uci});
 					resolve({score : (score/100).toFixed(2), moves : result.moves[0].uci});
 				})
 				.catch(error => {
@@ -235,7 +238,6 @@ module.exports = class Engine extends Game {
 
 	async playAI(){
 		let response = await this.evaluateBoard(this.board, this.turn);
-		console.log("RESPONSE", response);
 		let move = response.moves[0];
 		let start = move.substring(0,2);
 		let end = move.substring(2);

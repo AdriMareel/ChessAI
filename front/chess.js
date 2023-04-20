@@ -201,14 +201,15 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 				})
 					.then(res => res.json())
 					.then(data => {
+
+						console.log("data", data);
 						let idFirst = data.moves[0].slice(0, 2);
 						let idSecond = data.moves[0].slice(2, 4);
 						console.log("Move conseillé", idFirst, idSecond);
 						displayBestMove(idFirst, idSecond, color);
 			
-			
-						if (data.score.type == "mate"){
-							document.getElementById("evaluation").innerHTML = "M" + data.score.value;
+						if (data.type == "mate"){
+							document.getElementById("evaluation").innerHTML = "M" + data.score;
 						}
 						else{
 							document.getElementById("evaluation").innerHTML = data.score;
