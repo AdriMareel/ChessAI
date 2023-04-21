@@ -133,6 +133,9 @@ module.exports = class Engine extends Game {
 					
 					//check if there's a forced mate
 					let mate = false;
+					console.log("-----------------");
+					console.log(result.moves[0]);
+					console.log("-----------------");
 					result.moves.forEach(move => {
 						mate = true;
 						if (move.score.type == "mate"){
@@ -142,10 +145,10 @@ module.exports = class Engine extends Game {
 
 							// if the color is black, the score is negative
 							if (this.movesNumber % 2 == 1){
-								score *= -1;
+								move.score *= -1;
 							}
-							console.log({score : score, moves : move.uci});
-							console.log("-----------------");
+							console.log({score : move.score, moves : move.uci});
+							console.log("XXXXXXXXXX");
 							resolve({score : score.value, type : score.type , moves : move.uci});
 						}
 					});

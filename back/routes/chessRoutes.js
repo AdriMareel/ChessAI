@@ -21,6 +21,7 @@ module.exports = (app, game, engine) => {
 
 	app.post('/evaluation', async (req, res) => {
 		let score = await engine.evaluateBoard(engine.board, engine.turn);
+		console.log(score);
 		res.send(score);
 	});
 
