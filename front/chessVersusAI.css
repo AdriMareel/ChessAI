@@ -6,6 +6,7 @@ body{
 	margin: 0;
 	height: 100vh;
 	overflow: hidden;
+	background-image: url("bg2.png");
 }
 
 .grid {
@@ -109,6 +110,7 @@ body{
 .row{
 	display: flex;
 	flex-wrap: wrap;
+	align-items: center;
 }
 
 .square{

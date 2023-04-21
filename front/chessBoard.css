@@ -1,6 +1,5 @@
-
 body{
-	background-color: #8a8787;
+	background-image: url("bg2.png");
 	font-family: 'Roboto';
 	padding: 0;
 	margin: 0;
@@ -101,6 +100,10 @@ body{
 	color: white;
 }
 
+#board{
+	color:whitesmoke;
+	
+}
 
 .chessboard{
 	width: 420px;
@@ -110,7 +113,7 @@ body{
 	
 }
 
-  .history {
+.history {
 	grid-area: history;
 	display: flex;
 	align-items: center;
@@ -142,6 +145,7 @@ body{
 	float: left;
 	grid-area: fen;
 	width: 200px;
+	color: whitesmoke;
 	height: 50px;
 	margin-top: 50px;
 }
@@ -216,16 +220,20 @@ body{
 	padding: 0 20px;
 }
 
-
+.aide{
+	margin: 25% 25% 25% 25%;
+}
 .row{
 	display: flex;
 	flex-wrap: wrap;
+	align-items: center;
 }
 
 .square{
 	width: 50px;
 	height: 50px;
 	background-color: #000;
+	padding: 0;
 }
 
 .light{
@@ -239,6 +247,7 @@ body{
 .piece{
 	width: 50px;
 	height: 50px;
+	padding: 0;
 }
 
 .ligne{
