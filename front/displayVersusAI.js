@@ -140,3 +140,29 @@ export function displayHistory(coup, color){
 
     document.getElementById("history").innerHTML = Origine + rajout;
 }
+
+
+export function displayEndGameIA(color){
+	//blur the board
+	
+	//get history div text
+	let history = document.getElementById("history").innerHTML;
+	//check if the history has a # char
+	console.log("history : " + color)
+	if(history.includes("#")){
+		document.getElementById("body").classList.add("blur");
+		//display the endgame div
+		if(color == "white"){color = "blanc"}
+		else{color = "noir"}
+		document.getElementById("messageFin").innerHTML = "Echec et mat ! Les " + color + "s ont gagné !";
+		let winMessage = document.getElementById('endGame')
+		winMessage.classList.remove("hidden");
+		winMessage.classList.add('priority');
+		winMessage.style.display = "block";
+		return false;
+	}
+	else{ 
+		return true;
+	}
+
+}

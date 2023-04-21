@@ -1,5 +1,5 @@
 import { displayHistory } from './displayVersusAI.js';
-import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected } from './displayVersusAI.js';
+import { removePossibleMoves, displayPossibleMoves, toggleMoveMode, untoggleMoveMode, displayMove, isCheck, clearCheck, removeSelected, displaySelected , displayEndGameIA} from './displayVersusAI.js';
 
 export let clickedPiece = null;
 let history = []; 
@@ -179,4 +179,6 @@ export async function move(chessCoordinatePrevious, chessCoordinateNext) {
 				console.log("hey ho",data.history)
 				displayHistory(data.history[data.history.length - 1],"black")
 			});
+
+			displayEndGameIA("black");
 }
