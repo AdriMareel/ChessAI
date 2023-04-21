@@ -156,6 +156,10 @@ export function displayBestMove(idStart, idEnd, color) {
 	if(document.getElementById("line")){
 		document.getElementById("line").remove();
 	}
+	//get state of button "button"
+	let button = document.getElementById("button");
+	// if it is checked
+	if(button.checked){
 
 	if (document.getElementById("pointStart")){
 		document.getElementById("pointStart").remove();
@@ -189,6 +193,7 @@ export function displayBestMove(idStart, idEnd, color) {
 	line.style.transform = "rotate(" + Math.atan2(endY - startY, endX - startX) + "rad)";
 
 	document.body.appendChild(line);
+	}
 }
 displayBestMove("e2", "e4");
 

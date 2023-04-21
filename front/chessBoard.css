@@ -209,6 +209,11 @@ body{
 	align-items: center;
 	font-size: 60px;
 	font-weight: bold;
+	background-color: #000;
+	border-radius: 20px;
+	color:whitesmoke;
+	margin: 0 auto;
+	padding: 0 20px;
 }
 
 

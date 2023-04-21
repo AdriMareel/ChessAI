@@ -8,11 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="chessBoard.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="ttps://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css" rel="stylesheet"></script>
 	<title>Document</title>
 </head>
 <body id="body">
 	<nav class="navbar">
 		<div class="logo">CHESS AI</div>
+		<input type="checkbox" id="button" checked data-toggle="toggle" data-onstyle="outline-success" data-offstyle="outline-danger">
 		<button class="btn" onclick="location.href='/menu.html'">Menu</button>
 	</nav>
 	<div id="endGame" class="hidden"><p id="messageFin" class="victoryMessage"></p></div>
@@ -26,7 +28,7 @@
 	<div class="wrap">
 	<div class="chessboard" id="board"></div>
 	</div>
-	<div class="history"id="history">
+	<div class="history" id="history">
 
         <div class="titre">Historique</div>
         <div class="coups">
@@ -35,11 +37,12 @@
             <div class="coupB">Noir</div>
 		</div>
 	</div>
-	<div class="evaluation" id="evaluation">0.3</div>
+	<div class="evaluation">Score: <br/><span id="evaluation">0.3</span></div>
 	<div class="titleF" id="titleF">FEN de la partie</div>
 	<div class="fen" id="fen">
 		<div class="fenGame" id="fenGame">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</div>
 	</div>
+	
   </div>
 </body>
 </html>
