@@ -209,7 +209,7 @@ if(document.getElementById(chessCoordinatePrevious).firstChild.alt.match("pawn")
 						displayBestMove(idFirst, idSecond, color);
 			
 						if (data.type == "mate"){
-							document.getElementById("evaluation").innerHTML = "M" + data.score;
+							document.getElementById("evaluation").innerHTML = "#" + data.score;
 						}
 						else{
 							document.getElementById("evaluation").innerHTML = data.score;
